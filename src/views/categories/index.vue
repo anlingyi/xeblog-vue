@@ -70,8 +70,40 @@
                         color: '#fff'
                     },
                     {
-                        backgroundColor: '#9effca',
+                        backgroundColor: '#7a4171',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#38b48b',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#a99e93',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#f8b862',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#c8d5bb',
                         color: '#000'
+                    },
+                    {
+                        backgroundColor: '#bed2c3',
+                        color: '#000'
+                    },
+                    {
+                        backgroundColor: '#888084',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#ee836f',
+                        color: '#fff'
+                    },
+                    {
+                        backgroundColor: '#2e2930',
+                        color: '#fff'
                     }
                 ],
             }
