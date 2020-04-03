@@ -1,0 +1,56 @@
+@sidebar-background-color: #474a4d;
+
+.container {
+  flex-wrap: wrap;
+
+  main {
+    margin: 10px 20px;
+  }
+
+  .sidebar {
+    @sidebar-height: auto;
+    @sidebar-min-height: 120px;
+    @sidebar-width: 100%;
+    min-height: @sidebar-min-height;
+    position: relative;
+    z-index: 999;
+
+    .sidebar-main {
+      position: fixed;
+      min-width: @sidebar-width;
+      min-height: @sidebar-height;
+      border: 0;
+      box-shadow: 0px 0px 5px 0px @sidebar-background-color;
+      background-color: @sidebar-background-color;
+    }
+
+    .user-info {
+      .avatar {
+        width: 60px;
+        height: 60px;
+        margin: 15px auto;
+      }
+
+      .username {
+        margin-top: -5px;
+      }
+
+      .statistics {
+        display: none;
+      }
+    }
+
+    .menu-btn {
+      display: block;
+    }
+
+    .menu {
+      margin: 0;
+    }
+  }
+
+  .github-svg {
+    fill: #dcdddd;
+    color: @sidebar-background-color;
+  }
+}
