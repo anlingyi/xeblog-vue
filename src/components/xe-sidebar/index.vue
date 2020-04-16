@@ -41,6 +41,7 @@
                         <li><i class="fa fa-archive"></i> 归档</li>
                         <li><i class="fa fa-tags"></i> 标签</li>
                         <li><i class="fa fa-user-secret"></i> 关于</li>
+                        <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
                     </ul>
                     <div class="search-body">
                         <input type="text" placeholder="搜索..."/>&nbsp;
@@ -49,15 +50,20 @@
                 </div>
             </transition>
         </div>
+        <XeSubscription ref="subscribe"/>
     </div>
 </template>
 
 <script>
+    import XeSubscription from '../xe-subscription'
     export default {
         data() {
             return {
                 showMenu: false
             }
+        },
+        components: {
+            XeSubscription
         },
         mounted() {
             this.bindDisplayMenu()
@@ -90,6 +96,9 @@
                 }
                 document.documentElement.scrollTop = scrollTop - offset
                 setTimeout(this.backTop, 15)
+            },
+            subscribe() {
+                this.$refs.subscribe.open()
             }
         }
     }

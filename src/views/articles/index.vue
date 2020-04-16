@@ -1,5 +1,5 @@
 <template>
-    <xe-container>
+    <xe-container ref="xeContainer">
         <div class="posts">
             <h2 class="article-title">
                 Java从入门到入土
@@ -24,6 +24,9 @@
                 <div class="article-info-image">
                     <img src="https://oss.xeblog.cn/prod/50fbe9e7f1a04295a67aa12542242d1c.png">
                 </div>
+            </div>
+            <div class="subscribe">
+                <button @click="() => {this.$refs.xeContainer.subscribe()}"><i class="fa fa-feed"></i> 订阅博主</button>
             </div>
             <div class="tags">
                 <a href="#"><span><i class="fa fa-tag"></i>&nbsp;Java</span></a>
@@ -70,7 +73,6 @@
 
 <script>
     import '@/assets/lib/social-share/js/social-share.min.js'
-
     export default {
         data() {
             return {

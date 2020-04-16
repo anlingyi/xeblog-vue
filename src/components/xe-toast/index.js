@@ -2,24 +2,22 @@ import toastComponent from './toast'
 
 const Toast = {
     install: (vue) => {
-        const ToastConstructor = vue.extend(toastComponent)
-        const toast = new ToastConstructor()
-
-        toast.$mount(document.createElement('div'))
-        document.body.appendChild(toast.$el)
-
         vue.prototype.$toast = {
             open(text, type = 'info', duration = 3000) {
+                const ToastConstructor = vue.extend(toastComponent)
+                const toast = new ToastConstructor()
                 toast.text = text
                 toast.type = type
-                toast.isShow = true
+
+                toast.$mount(document.createElement('div'))
+                document.body.appendChild(toast.$el)
 
                 if (duration === 0) {
                     return
                 }
 
                 setTimeout(() => {
-                    toast.isShow = false
+                    toast.$el.remove()
                 }, duration)
             },
             success(text, duration) {

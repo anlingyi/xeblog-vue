@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-        <div v-show="isShow" :class="type">
+        <div :class="type">
             <i :class="getIcon"></i>&nbsp;
             {{ text }}
             &nbsp;<i class="fa fa-close" style="cursor: pointer;" title="关闭" @click="close"></i></div>
@@ -11,7 +11,6 @@
     export default {
         data() {
             return {
-                isShow: false,
                 type: 'info',
                 text: '',
             }
@@ -34,7 +33,7 @@
         },
         methods: {
             close() {
-                this.isShow = false
+                this.$el.remove()
             }
         }
     }
@@ -54,6 +53,7 @@
         border: 1px solid transparent;
         font-size: 15px;
         text-align: center;
+        margin-top: 10px;
     }
 
     @media (max-width: 950px) {

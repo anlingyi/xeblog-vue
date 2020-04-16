@@ -26,7 +26,13 @@
 </template>
 
 <script>
-    export default {}
+    export default {
+        methods: {
+            subscribe() {
+                this.$refs.xeSidebar.subscribe()
+            }
+        }
+    }
 </script>
 
 <style lang="less">
