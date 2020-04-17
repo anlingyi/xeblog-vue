@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <xe-pagination pageIndex="1" pages="1"/>
+        <xe-pagination pageIndex="1" pages="5"/>
     </xe-container>
 </template>
 
