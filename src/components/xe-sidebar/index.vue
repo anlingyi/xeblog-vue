@@ -56,6 +56,8 @@
 
 <script>
     import XeSubscription from '../xe-subscription'
+    import * as api from '@/api'
+
     export default {
         data() {
             return {
@@ -67,6 +69,7 @@
         },
         mounted() {
             this.bindDisplayMenu()
+            this.init()
         },
         methods: {
             displayMenu() {
@@ -108,6 +111,11 @@
 
                 this.$router.push({
                     path: url
+                })
+            },
+            init() {
+                api.listMenu().then((resp) => {
+                    console.log(resp)
                 })
             }
         }
