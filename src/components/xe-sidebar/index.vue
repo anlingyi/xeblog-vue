@@ -37,10 +37,10 @@
                 <div class="menu" v-show="showMenu">
                     <hr/>
                     <ul>
-                        <li><i class="fa fa-home"></i> 首页</li>
-                        <li><i class="fa fa-archive"></i> 归档</li>
-                        <li><i class="fa fa-tags"></i> 标签</li>
-                        <li><i class="fa fa-user-secret"></i> 关于</li>
+                        <li @click="to('/')"><i class="fa fa-home"></i> 首页</li>
+                        <li @click="to('/categories')"><i class="fa fa-archive"></i> 分类</li>
+                        <li @click="to('/tags')"><i class="fa fa-tags"></i> 标签</li>
+                        <li @click="to('https://xeblog.cn')"><i class="fa fa-user-secret"></i> 关于</li>
                         <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
                     </ul>
                     <div class="search-body">
@@ -99,6 +99,16 @@
             },
             subscribe() {
                 this.$refs.subscribe.open()
+            },
+            to(url) {
+                if (url.startsWith('http')) {
+                    window.open(url, '_blank')
+                    return
+                }
+
+                this.$router.push({
+                    path: url
+                })
             }
         }
     }

@@ -31,9 +31,6 @@
                     0, 1, 2, 3, 4, 5
                 ]
             }
-        },
-        mounted() {
-            this.$toast.success('这是一条测试消息！')
         }
     }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <xe-container>
+    <xe-container ref="xeContainer">
         <div id="tag-cloud"></div>
     </xe-container>
 </template>
@@ -141,6 +141,11 @@
         methods: {
             init() {
                 let tagCloud = document.getElementById('tag-cloud')
+                if (!tagCloud) {
+                    console.log(1)
+                    setTimeout(this.init, 50)
+                    return
+                }
                 let width = tagCloud.offsetWidth
                 let height = tagCloud.offsetHeight
                 if (width > 1000) {
@@ -172,7 +177,7 @@
                 svg.setAttribute('viewBox', '0,0,' + width + ',' + height + '')
             }
         },
-        updated() {
+        mounted() {
             this.init()
         }
     }
