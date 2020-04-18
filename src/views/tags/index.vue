@@ -142,7 +142,6 @@
             init() {
                 let tagCloud = document.getElementById('tag-cloud')
                 if (!tagCloud) {
-                    console.log(1)
                     setTimeout(this.init, 50)
                     return
                 }

@@ -37,10 +37,9 @@
                 <div class="menu" v-show="showMenu">
                     <hr/>
                     <ul>
-                        <li @click="to('/')"><i class="fa fa-home"></i> 首页</li>
-                        <li @click="to('/categories')"><i class="fa fa-archive"></i> 分类</li>
-                        <li @click="to('/tags')"><i class="fa fa-tags"></i> 标签</li>
-                        <li @click="to('https://xeblog.cn')"><i class="fa fa-user-secret"></i> 关于</li>
+                        <li @click="to(menu.url)" v-for="menu in menuList" :key="menu.id">
+                            <i :class="'fa fa-' + menu.icon"></i> {{ menu.name }}
+                        </li>
                         <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
                     </ul>
                     <div class="search-body">
@@ -61,7 +60,8 @@
     export default {
         data() {
             return {
-                showMenu: false
+                showMenu: false,
+                menuList: []
             }
         },
         components: {
@@ -115,7 +115,7 @@
             },
             init() {
                 api.listMenu().then((resp) => {
-                    console.log(resp)
+                    this.menuList = resp.data
                 })
             }
         }
