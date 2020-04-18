@@ -6,28 +6,28 @@
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </div>
                 <div class="avatar" @click="backTop">
-                    <img src="https://oss.xeblog.cn/prod/2303fbd79a504111b223e0d8e81d7ccd.jpg">
+                    <img :src="userInfo.avatar">
                 </div>
                 <div class="username">
-                    AnLingYi
+                    {{ userInfo.name }}
                 </div>
                 <transition name="fade">
                     <div class="signature" v-show="showMenu">
-                        穷且益坚，不坠青云之志。
+                        {{ userInfo.signature }}
                     </div>
                 </transition>
                 <div class="statistics">
                     <ul>
                         <li>
-                            <div class="val">99</div>
+                            <div class="val">{{ userInfo.articleCount }}</div>
                             <div>日志</div>
                         </li>
                         <li>
-                            <div class="val">99</div>
+                            <div class="val">{{ userInfo.categoryCount }}</div>
                             <div>分类</div>
                         </li>
                         <li>
-                            <div class="val">99</div>
+                            <div class="val">{{ userInfo.tagCount }}</div>
                             <div>标签</div>
                         </li>
                     </ul>
@@ -37,7 +37,8 @@
                 <div class="menu" v-show="showMenu">
                     <hr/>
                     <ul>
-                        <li @click="to(menu.url)" v-for="menu in menuList" :key="menu.id">
+                        <li @click="to(menu.url)" v-for="menu in menuList" :key="menu.id"
+                            :class="getSelectedCss(menu.url)">
                             <i :class="'fa fa-' + menu.icon"></i> {{ menu.name }}
                         </li>
                         <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
@@ -61,7 +62,15 @@
         data() {
             return {
                 showMenu: false,
-                menuList: []
+                menuList: [],
+                userInfo: {
+                    avatar: '',
+                    name: '',
+                    signature: '',
+                    articleCount: 0,
+                    categoryCount: 0,
+                    tagCount: 0
+                }
             }
         },
         components: {
@@ -70,6 +79,7 @@
         mounted() {
             this.bindDisplayMenu()
             this.init()
+            this.getUserInfo()
         },
         methods: {
             displayMenu() {
@@ -117,6 +127,18 @@
                 api.listMenu().then((resp) => {
                     this.menuList = resp.data
                 })
+            },
+            getUserInfo() {
+                api.userInfo().then((resp) => {
+                    this.userInfo = resp.data
+                })
+            },
+            getSelectedCss(url) {
+                if (this.$route.path === url) {
+                    return 'selectedMenu'
+                }
+
+                return ''
             }
         }
     }

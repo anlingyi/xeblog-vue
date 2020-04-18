@@ -1,21 +1,27 @@
 <template>
     <footer>
-        <div>
-            &copy;&nbsp;AnLingYi&nbsp;<i class="fa fa-heart">&nbsp;2020</i>&nbsp;<a href="#">浙ICP备19002909号</a>
+        <div v-html="getFooterInfo()">
         </div>
     </footer>
 </template>
 
 <script>
-    export default {}
+    export default {
+        methods: {
+            getFooterInfo() {
+                return this.$websiteInfo.copyright
+            }
+        }
+    }
 </script>
 
 <style scoped>
     footer {
+        margin-top: 20px;
+        margin-bottom: 10px;
         width: 100%;
         min-height: 50px;
         text-align: center;
-        line-height: 50px;
         font-size: 14px;
         color: #555;
         z-index: -1;

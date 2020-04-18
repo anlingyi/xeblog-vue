@@ -7,3 +7,19 @@ export function listMenu() {
         method: 'get'
     })
 }
+
+// 用户信息
+export function userInfo() {
+    return request({
+        url: 'user_info',
+        method: 'get'
+    })
+}
+
+// 网站信息
+export function websiteInfo() {
+    return request({
+        url: 'website_info',
+        method: 'get'
+    })
+}

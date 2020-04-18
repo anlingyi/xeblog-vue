@@ -15,7 +15,14 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    document.title = (to.meta.title || 'xeblog') + ' | 小毅博客-分享的不只是代码！'
+    let websiteInfo = Vue.prototype.$websiteInfo
+    if (!websiteInfo) {
+        websiteInfo = {
+            title: 'title',
+            subtitle: 'subtitle'
+        }
+    }
+    document.title = (to.meta.title || 'xeblog') + ' | ' + websiteInfo.title + '-' + websiteInfo.subtitle
     next()
 })
 
