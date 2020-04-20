@@ -23,3 +23,12 @@ export function websiteInfo() {
         method: 'get'
     })
 }
+
+// 文章列表
+export function articleList(data) {
+    return request({
+        url: 'articles',
+        method: 'get',
+        params: data
+    })
+}

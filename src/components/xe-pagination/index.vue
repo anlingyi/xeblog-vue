@@ -1,32 +1,40 @@
 <template>
     <div class="pagination">
-        <button class="previous" title="上一页" v-show="this.pageIndex > 1" @click="previous">
-            &lt;
+        <button class="previous" title="上一页" v-show="this.page > 1" @click="previous">
+            <i class="fa fa-chevron-left"></i>
         </button>
         <button class="pageIndex" title="当前页码">
-            {{ this.pageIndex }}
+            {{ this.page }}
         </button>
-        <button class="next" title="下一页" v-show="this.pageIndex < this.pages" @click="next">
-            &gt;
+        <button class="next" title="下一页" v-show="this.page < this.pages" @click="next">
+            <i class="fa fa-chevron-right"></i>
         </button>
     </div>
 </template>
 
 <script>
     export default {
-        props: ['pageIndex', 'pages'],
+        props: ['pageIndex', 'pageSize'],
+        data() {
+            return {
+                page: this.pageIndex,
+                pages: this.pageSize
+            }
+        },
         methods: {
             previous() {
-                if (this.pageIndex == 1) {
+                if (this.page == 1) {
                     return
                 }
-                this.pageIndex--
+                this.page--
+                this.$emit('pageIndexChange', this.page)
             },
             next() {
-                if (this.pageIndex == this.pages) {
+                if (this.page == this.pages) {
                     return
                 }
-                this.pageIndex++
+                this.page++
+                this.$emit('pageIndexChange', this.page)
             }
         }
     }
