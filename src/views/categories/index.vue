@@ -72,7 +72,7 @@
             getCategoryList() {
                 api.categoryList().then(resp => {
                     if (!resp.data || resp.data.length < 1) {
-                        this.$toast.info('没有分类！')
+                        this.$toast.info('没有分类！', 0)
                         return
                     }
                     this.categories = resp.data

@@ -1,8 +1,8 @@
 <template>
     <xe-container>
         <div class="queryData">
-            <div v-if="tagName !== ''">
-                <span>标签：</span><span class="tag">{{ this.tagName }}</span>
+            <div v-if="this.queryData.tag !== ''">
+                <span>标签：</span><span class="tag">{{ this.queryData.tag }}</span>
             </div>
             <div v-if="categoryName !== ''">
                 <span>分类：</span><span class="category">{{ this.categoryName }}</span>
@@ -44,13 +44,12 @@
             return {
                 articleList: [],
                 pages: 0,
-                tagName: this.$route.query.tagName || '',
                 categoryName: this.$route.query.categoryName || '',
                 queryData: {
                     pageIndex: 1,
                     pageSize: 10,
                     query: this.$route.query.query || '',
-                    tag: this.$route.query.tagId || '',
+                    tag: this.$route.query.tag || '',
                     categoryId: this.$route.query.categoryId || ''
                 },
                 isPageShow: false

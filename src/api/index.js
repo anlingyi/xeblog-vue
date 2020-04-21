@@ -40,3 +40,11 @@ export function categoryList() {
         method: 'get',
     })
 }
+
+// 标签列表
+export function tagList() {
+    return request({
+        url: 'tags',
+        method: 'get',
+    })
+}
