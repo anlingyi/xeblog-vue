@@ -44,8 +44,8 @@
                         <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
                     </ul>
                     <div class="search-body">
-                        <input type="text" placeholder="搜索..."/>&nbsp;
-                        <i class="fa fa-search search-btn" title="点击搜索"></i>
+                        <input type="text" placeholder="搜索..." v-model="query"/>&nbsp;
+                        <i class="fa fa-search search-btn" title="点击搜索" @click="search()"></i>
                     </div>
                 </div>
             </transition>
@@ -70,7 +70,8 @@
                     articleCount: 0,
                     categoryCount: 0,
                     tagCount: 0
-                }
+                },
+                query: ''
             }
         },
         components: {
@@ -139,6 +140,18 @@
                 }
 
                 return ''
+            },
+            search() {
+                if (this.query.trim() === '') {
+                    return
+                }
+
+                this.$router.push({
+                    path: '/',
+                    query: {
+                        query: this.query
+                    }
+                })
             }
         }
     }

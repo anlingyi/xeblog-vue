@@ -2,6 +2,13 @@ export default [
     {
         path: '/',
         name: 'index',
+        query: {
+            tagId: '',
+            tagName: '',
+            categoryId: '',
+            categoryName: '',
+            query: ''
+        },
         meta: {
             title: '首页'
         },
