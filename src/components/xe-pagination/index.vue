@@ -27,13 +27,16 @@
                     return
                 }
                 this.page--
-                this.$emit('pageIndexChange', this.page)
             },
             next() {
                 if (this.page == this.pages) {
                     return
                 }
                 this.page++
+            }
+        },
+        watch: {
+            page() {
                 this.$emit('pageIndexChange', this.page)
             }
         }
