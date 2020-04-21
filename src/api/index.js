@@ -32,3 +32,11 @@ export function articleList(data) {
         params: data
     })
 }
+
+// 分类列表
+export function categoryList() {
+    return request({
+        url: 'categories',
+        method: 'get',
+    })
+}

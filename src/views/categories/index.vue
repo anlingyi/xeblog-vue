@@ -1,69 +1,21 @@
 <template>
     <xe-container>
         <div class="categories">
-            <span v-for="category in categories" :key="category.id" :style="randomStyle">
-                {{ category.name + ' (' + category.total + ')' }}
+            <span v-for="category in categories" :key="category.id" :style="randomStyle"
+                  @click="queryDataByCategory(category.id, category.name)">
+                {{ category.name + ' (' + category.articleCount + ')' }}
             </span>
         </div>
     </xe-container>
 </template>
 
 <script>
+    import * as api from '@/api'
+
     export default {
         data() {
             return {
-                categories: [
-                    {
-                        id: 1,
-                        name: '记录',
-                        total: 20
-                    },
-                    {
-                        id: 2,
-                        name: '设计模式',
-                        total: 5
-                    },
-                    {
-                        id: 3,
-                        name: '算法',
-                        total: 1
-                    },
-                    {
-                        id: 4,
-                        name: 'Java',
-                        total: 34
-                    },
-                    {
-                        id: 5,
-                        name: '前端',
-                        total: 3
-                    },
-                    {
-                        id: 6,
-                        name: '记录',
-                        total: 20
-                    },
-                    {
-                        id: 7,
-                        name: '设计模式',
-                        total: 5
-                    },
-                    {
-                        id: 8,
-                        name: '算法',
-                        total: 1
-                    },
-                    {
-                        id: 9,
-                        name: 'Java',
-                        total: 34
-                    },
-                    {
-                        id: 10,
-                        name: '前端',
-                        total: 3
-                    }
-                ],
+                categories: [],
                 styles: [
                     {
                         backgroundColor: '#aaa',
@@ -115,6 +67,29 @@
                     return this.styles[Math.floor(Math.random() * this.styles.length)]
                 }
             }
+        },
+        methods: {
+            getCategoryList() {
+                api.categoryList().then(resp => {
+                    if (!resp.data || resp.data.length < 1) {
+                        this.$toast.info('没有分类！')
+                        return
+                    }
+                    this.categories = resp.data
+                })
+            },
+            queryDataByCategory(categoryId, categoryName) {
+                this.$router.push({
+                    path: '/',
+                    query: {
+                        categoryId: categoryId,
+                        categoryName: categoryName
+                    }
+                })
+            }
+        },
+        mounted() {
+            this.getCategoryList()
         }
     }
 </script>
