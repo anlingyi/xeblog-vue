@@ -1,13 +1,19 @@
 <template>
     <div class="pagination">
+        <button class="firstPage" title="首页" v-show="this.page != 1" @click="() => this.page = 1">
+            <i class="fa fa-angle-double-left"></i>
+        </button>
         <button class="previous" title="上一页" v-show="this.page > 1" @click="previous">
-            <i class="fa fa-chevron-left"></i>
+            <i class="fa fa-angle-left"></i>
         </button>
         <button class="pageIndex" title="当前页码">
             {{ this.page }}
         </button>
         <button class="next" title="下一页" v-show="this.page < this.pages" @click="next">
-            <i class="fa fa-chevron-right"></i>
+            <i class="fa fa-angle-right"></i>
+        </button>
+        <button class="lastPage" title="尾页" v-show="this.page != this.pages" @click="() => this.page = this.pages">
+            <i class="fa fa-angle-double-right"></i>
         </button>
     </div>
 </template>
@@ -65,8 +71,18 @@
             }
         }
 
+        .firstPage, .next {
+            margin-right: 10px;
+        }
+
         .pageIndex {
             margin: 0 30px;
+            background-color: #474a4d;
+
+            &:hover {
+                color: #d3cbc6;
+                box-shadow: 0px 0px 5px 3px #ccc;
+            }
         }
     }
 </style>
