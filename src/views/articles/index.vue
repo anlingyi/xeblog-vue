@@ -1,37 +1,24 @@
 <template>
     <xe-container ref="xeContainer">
         <div class="posts">
-            <h2 class="article-title">
-                Java从入门到入土
+            <h2 class="article-title" v-text="articleInfo.title">
             </h2>
             <div class="article-mark">
-                <i class="fa fa-calendar-o"></i>&nbsp;<span class="article-send-time">2020/03/24</span>&nbsp;|
-                <i class="fa fa-leaf"></i>&nbsp;<span class="article-category"><a href="#">记录</a></span>&nbsp;|
-                <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count">999</span>
+                <i class="fa fa-calendar-o"></i>&nbsp;<span class="article-send-time"
+                                                            v-text="articleInfo.createTime"></span>&nbsp;|
+                <i class="fa fa-leaf"></i>&nbsp;<span class="article-category">
+                <a :href="'/?categoryId=' + articleInfo.categoryId + '&categoryName=' + articleInfo.categoryName"
+                   v-text="articleInfo.categoryName"></a>
+                </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
+                                                                    v-text="articleInfo.pageviews"></span>
             </div>
-            <div class="article-info">
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
-                哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚红红火火恍恍惚惚哈哈哈哈哈哈哈哈哈
-                <div class="article-info-image">
-                    <img src="https://oss.xeblog.cn/prod/50fbe9e7f1a04295a67aa12542242d1c.png">
-                </div>
-                <div class="article-info-image">
-                    <img src="https://oss.xeblog.cn/prod/50fbe9e7f1a04295a67aa12542242d1c.png">
-                </div>
+            <div class="article-info markdown-body" v-html="articleInfo.content">
             </div>
             <div class="subscribe">
                 <button @click="() => {this.$refs.xeContainer.subscribe()}"><i class="fa fa-feed"></i> 订阅博主</button>
             </div>
             <div class="tags">
-                <a href="#"><span><i class="fa fa-tag"></i>&nbsp;Java</span></a>
-                <a href="#"><span><i class="fa fa-tag"></i>&nbsp;Spring</span></a>
-                <a href="#"><span><i class="fa fa-tag"></i>&nbsp;测试</span></a>
+                <a :href="'/?tag=' + tag" v-for="tag in articleInfo.tags" :key="tag"><span><i class="fa fa-tag"></i>&nbsp;{{ tag }}</span></a>
             </div>
             <div class="share">
                 <i>“ 爱分享的人，运气不会太差！” — 沃·兹基硕德</i>
@@ -41,15 +28,15 @@
                 <ul class="post-copyright">
                     <li class="post-copyright-author">
                         <strong>更新时间：</strong>
-                        <span>2020/03/30</span>
+                        <span v-text="articleInfo.updateTime"></span>
                     </li>
                     <li class="post-copyright-author">
                         <strong>本文作者：</strong>
-                        <span>AnLingYi</span>
+                        <span v-text="articleInfo.author"></span>
                     </li>
                     <li class="post-copyright-link">
                         <strong>本文链接：</strong>
-                        <a href="#" target="_blank">https://xeblog.cn</a>
+                        <a href="#" target="_blank">{{ this.$route.path }}</a>
                     </li>
                     <li class="post-copyright-license">
                         <strong>版权声明：</strong>
@@ -59,10 +46,12 @@
             </div>
             <div class="nav">
                 <div class="previous">
-                    <a href="#"><i class="fa fa-chevron-left"></i>上一篇哈哈哈哈哈哈哈哈哈哈哈哈</a>
+                    <a :href="previous.id ? '/articles/' + previous.id : 'javascript:;'"><i
+                            class="fa fa-chevron-left"></i>{{ previous.title ? previous.title : '没有了' }}</a>
                 </div>
                 <div class="next">
-                    <a href="#">哈哈哈哈哈哈哈哈哈哈哈哈下一篇<i class="fa fa-chevron-right"></i></a>
+                    <a :href="next.id ? '/articles/' + next.id : 'javascript:;'">{{ next.title ? next.title : '没有了' }}<i
+                            class="fa fa-chevron-right"></i></a>
                 </div>
                 <div style="clear:both;"></div>
             </div>
@@ -70,18 +59,83 @@
     </xe-container>
 </template>
 
-
 <script>
     import '@/assets/lib/social-share/js/social-share.min.js'
+    import * as api from '@/api'
+    import MarkDownIt from 'markdown-it'
+
     export default {
         data() {
             return {
-                sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter']
+                sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
+                articleInfo: {
+                    id: '',
+                    title: '',
+                    categoryName: '',
+                    tags: [],
+                    pageviews: '',
+                    author: '',
+                    content: '',
+                    createTime: '',
+                    updateTime: '',
+                    categoryId: '',
+                    cover: '',
+                    brief: ''
+                },
+                previous: {
+                    id: '',
+                    title: ''
+                },
+                next: {
+                    id: '',
+                    title: ''
+                }
+            }
+        },
+        mounted() {
+            this.getArticleInfo()
+        },
+        methods: {
+            getArticleInfo() {
+                api.articleInfo(this.$route.params.id).then(resp => {
+                    const data = resp.data
+                    if (!data || !data.articleDetailsDTO) {
+                        this.$router.push({
+                            path: '/404'
+                        })
+                        return
+                    }
+
+                    const articleData = data.articleDetailsDTO
+
+                    this.articleInfo = {
+                        id: articleData.id,
+                        title: articleData.title,
+                        categoryName: articleData.categoryName,
+                        tags: articleData.tag ? articleData.tag.split(',') : [],
+                        pageviews: articleData.pageviews,
+                        author: articleData.author,
+                        content: new MarkDownIt({html: true}).render(articleData.content),
+                        createTime: articleData.createTime,
+                        updateTime: articleData.updateTime,
+                        categoryId: articleData.categoryId,
+                        cover: articleData.cover,
+                        brief: articleData.brief
+                    }
+
+                    if (data.previous) {
+                        this.previous = data.previous
+                    }
+                    if (data.next) {
+                        this.next = data.next
+                    }
+                })
             }
         }
     }
 </script>
 
-<style rel="stylesheet" type="text/css" src="@/assets/lib/social-share/css/share.min.css"></style>
 <style scoped>
+    @import '../../assets/lib/social-share/css/share.min.css';
+    @import '../../assets/lib/markdown-theme/GitHub.css';
 </style>

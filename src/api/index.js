@@ -48,3 +48,11 @@ export function tagList() {
         method: 'get',
     })
 }
+
+// 文章详情
+export function articleInfo(id) {
+    return request({
+        url: 'articles/' + id,
+        method: 'get',
+    })
+}

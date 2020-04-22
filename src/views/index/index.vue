@@ -19,7 +19,7 @@
                 <div class="article-mark">
                     <i class="fa fa-calendar-o"></i> <span class="article-send-time" v-text="article.createTime"></span>&nbsp;|
                     <i class="fa fa-leaf"></i> <span class="article-category">
-                    <a href="javascript:void(0)" @click="queryDataByCategory(article.categoryId, article.categoryName)"
+                    <a :href="'/?categoryId=' + article.categoryId + '&categoryName=' + article.categoryName"
                        v-text="article.categoryName"></a>
                     </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
                                                                         v-text="article.pageviews"></span>
@@ -78,15 +78,6 @@
                     this.queryData.pageIndex = newPageIndex
                     this.getArticleList()
                 }
-            },
-            queryDataByCategory(categoryId, categoryName) {
-                this.$router.push({
-                    path: '/',
-                    query: {
-                        categoryId: categoryId,
-                        categoryName: categoryName
-                    }
-                })
             }
         },
         watch: {
