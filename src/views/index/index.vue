@@ -8,7 +8,7 @@
                 <span>分类：</span><span class="category">{{ this.categoryName }}</span>
             </div>
             <div v-if="queryData.query !== ''">
-                <span>关键词：</span> <span class="keyword">" {{ this.queryData.query }} "</span>
+                <span>搜索关键字：</span> <span class="keyword">" {{ this.queryData.query }} "</span>
             </div>
         </div>
         <div class="articles">
