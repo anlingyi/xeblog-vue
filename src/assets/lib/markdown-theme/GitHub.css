@@ -95,10 +95,6 @@
     margin: .67em 0;
 }
 
-.markdown-body img {
-    box-shadow: 0px 0px 5px 0px #ccc;
-}
-
 .markdown-body code,
 .markdown-body kbd,
 .markdown-body pre {
@@ -774,18 +770,19 @@
     background-color: #f6f8fa;
 }
 
-.markdown-body img::before {
-    content: '<div class="article-info-image">';
+.markdown-body .article-image {
+    max-width: 680px;
+    height: auto;
+    text-align: center;
+    margin: 0 auto;
 }
-
-.markdown-body img::after {
-    content: '</div>';
-}
-
 .markdown-body img {
     max-width: 100%;
-    box-sizing: initial;
+    max-height: 100%;
     background-color: #fff;
+    border-radius: 5px;
+    padding: 1px;
+    box-shadow: 0px 0px 5px 0px #ccc;
 }
 
 .markdown-body code {
@@ -794,6 +791,7 @@
     font-size: 85%;
     background-color: rgba(27, 31, 35, .05);
     border-radius: 3px;
+    width: 0;
 }
 
 .markdown-body pre {
@@ -830,8 +828,8 @@
 }
 
 .markdown-body pre code {
-    display: inline;
-    max-width: auto;
+    display: block;
+    max-width: 100%;
     padding: 0;
     margin: 0;
     overflow: visible;

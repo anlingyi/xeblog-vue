@@ -22,7 +22,7 @@
             </div>
             <div class="share">
                 <i>“ 爱分享的人，运气不会太差！” — 沃·兹基硕德</i>
-                <div class="social-share" :data-sites="sites"></div>
+                <div class="share-body"></div>
             </div>
             <div class="copyright">
                 <ul class="post-copyright">
@@ -36,7 +36,7 @@
                     </li>
                     <li class="post-copyright-link">
                         <strong>本文链接：</strong>
-                        <a href="#" target="_blank">{{ this.$route.path }}</a>
+                        <a :href="currentUrl" target="_blank">{{ currentUrl }}</a>
                     </li>
                     <li class="post-copyright-license">
                         <strong>版权声明：</strong>
@@ -67,7 +67,6 @@
     export default {
         data() {
             return {
-                sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
                 articleInfo: {
                     id: '',
                     title: '',
@@ -89,7 +88,8 @@
                 next: {
                     id: '',
                     title: ''
-                }
+                },
+                currentUrl: window.location.href,
             }
         },
         mounted() {
@@ -107,6 +107,7 @@
                     }
 
                     const articleData = data.articleDetailsDTO
+                    document.title = document.title.replace('xeblog', articleData.title)
 
                     this.articleInfo = {
                         id: articleData.id,
@@ -115,13 +116,33 @@
                         tags: articleData.tag ? articleData.tag.split(',') : [],
                         pageviews: articleData.pageviews,
                         author: articleData.author,
-                        content: new MarkDownIt({html: true}).render(articleData.content),
                         createTime: articleData.createTime,
                         updateTime: articleData.updateTime,
                         categoryId: articleData.categoryId,
                         cover: articleData.cover,
                         brief: articleData.brief
                     }
+
+                    let md = new MarkDownIt({
+                        html: true
+                    })
+                    md.renderer.rules.image = (tokens, idx, options, env, self) => {
+                        let token = tokens[idx]
+                        token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
+                        let result = self.renderToken(tokens, idx, options)
+                        return '<div class="article-image">' + result + '</div>';
+                    }
+                    this.articleInfo.content = md.render(articleData.content)
+
+                    const config = {
+                        sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
+                        title: document.title,
+                        description: this.articleInfo.brief,
+                        image: this.articleInfo.cover,
+                        source: this.currentUrl,
+                        url: this.currentUrl
+                    }
+                    socialShare('.share-body', config)
 
                     if (data.previous) {
                         this.previous = data.previous
