@@ -56,3 +56,23 @@ export function articleInfo(id) {
         method: 'get',
     })
 }
+
+// 发送验证码
+export function sendVerifyCode(data) {
+    return request({
+        url: '/subscribe/sendVerifyCode',
+        method: 'get',
+        params: {
+            email: data
+        }
+    })
+}
+
+// 订阅
+export function subscribe(data) {
+    return request({
+        url: '/subscribe',
+        method: 'post',
+        params: data
+    })
+}

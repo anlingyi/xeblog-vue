@@ -17,7 +17,8 @@
                     </div>
                 </div>
                 <div class="button">
-                    <button v-show="isShowEmail" @click="sendVerifyCode">OK <i class="fa fa-check"></i></button>
+                    <button v-show="isShowEmail" @click="preSubscribe" ref="okBtn">OK <i class="fa fa-check"></i>
+                    </button>
                     <button v-show="!isShowEmail" @click="subscribe">订阅 <i class="fa fa-feed"></i></button>
                 </div>
             </div>
@@ -27,6 +28,7 @@
 
 <script>
     import RegEx from '../../constants/RegEx'
+    import * as api from '@/api'
 
     export default {
         data() {
@@ -81,9 +83,19 @@
             subscribe() {
                 this.checkEmail()
                 this.checkVerifyCode()
-                // todo 调用订阅接口
-                this.$toast.success("感谢您的订阅！")
-                this.init()
+
+                api.subscribe({
+                    email: this.email,
+                    code: this.verifyCode
+                }).then(resp => {
+                    if (resp.code !== 200) {
+                        this.$toast.info(resp.message)
+                        return
+                    }
+
+                    this.$toast.success("感谢您的订阅！")
+                    this.init()
+                })
             },
             lockRetry(t) {
                 this.retryTime = t--
@@ -98,12 +110,33 @@
                     this.lockRetry(t)
                 }, 1000)
             },
-            sendVerifyCode() {
+            async sendVerifyCode() {
                 this.checkEmail()
-                // todo 调用发送验证码接口
-                this.lockRetry(5)
-                this.isShowEmail = false
-                this.$toast.success("验证码已发送到您的邮箱，请注意查收！", 5000)
+
+                await api.sendVerifyCode(this.email).then(resp => {
+                    if (resp.code !== 200) {
+                        this.$toast.info(resp.message)
+                        return
+                    }
+
+                    this.lockRetry(15)
+                    this.isShowEmail = false
+                    this.$toast.success("验证码已发送到您的邮箱，请注意查收！", 5000)
+                })
+            },
+            async preSubscribe() {
+                let okBtn = this.$refs.okBtn
+                const originHtml = okBtn.innerHTML
+
+                okBtn.textContent = 'Loading...'
+                okBtn.setAttribute('disabled', 'true')
+
+                try {
+                    await this.sendVerifyCode()
+                } finally {
+                    okBtn.innerHTML = originHtml
+                    okBtn.removeAttribute('disabled')
+                }
             }
         }
     }
