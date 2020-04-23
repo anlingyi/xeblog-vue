@@ -55,6 +55,7 @@
                 </div>
                 <div style="clear:both;"></div>
             </div>
+            <div id="lv-container" :data-uid="livereUid" :data-id="livereId"></div>
         </div>
     </xe-container>
 </template>
@@ -90,6 +91,8 @@
                     title: ''
                 },
                 currentUrl: window.location.href,
+                livereId: 'city', // 来必力id
+                livereUid: 'MTAyMC80MzA2MC8xOTYwNg==' // 来必力uid
             }
         },
         mounted() {
@@ -150,7 +153,27 @@
                     if (data.next) {
                         this.next = data.next
                     }
+
+                    this.livereComments()
                 })
+            },
+            livereComments() {
+                window.livereOptions = {
+                    refer: window.location.href.replace(/^(.*)(xeblog.cn*)/, 'www.$2')
+                };
+                (function (d, s) {
+                    let j, e = d.getElementsByTagName(s)[0];
+
+                    if (typeof LivereTower === 'function') {
+                        return;
+                    }
+
+                    j = d.createElement(s);
+                    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+                    j.async = true;
+
+                    e.parentNode.insertBefore(j, e);
+                })(document, 'script');
             }
         }
     }
