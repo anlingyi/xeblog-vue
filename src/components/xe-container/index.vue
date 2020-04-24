@@ -19,7 +19,9 @@
         </div>
         <xe-sidebar ref="xeSidebar"/>
         <main ref="main">
-            <slot/>
+            <div class="xe-main">
+                <slot/>
+            </div>
             <xe-footer/>
         </main>
     </div>
