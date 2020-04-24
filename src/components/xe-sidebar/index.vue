@@ -5,8 +5,8 @@
                 <div class="menu-btn" ref="menuBtn">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                 </div>
-                <div class="avatar" @click="backTop">
-                    <img :src="userInfo.avatar">
+                <div class="avatar">
+                    <img :src="userInfo.avatar" @click.prevent="backTop">
                 </div>
                 <div class="username">
                     {{ userInfo.name }}
@@ -100,15 +100,19 @@
                 }
             },
             backTop() {
-                let scrollTop = document.documentElement.scrollTop
+                let e = document.body.scrollTop ? document.body : document.documentElement
+
+                let scrollTop = e.scrollTop
                 if (scrollTop === 0) {
                     return;
                 }
+
                 let offset = Math.floor(scrollTop / 5)
                 if (offset === 0) {
                     offset = scrollTop
                 }
-                document.documentElement.scrollTop = scrollTop - offset
+                e.scrollTop = scrollTop - offset
+
                 setTimeout(this.backTop, 15)
             },
             subscribe() {
