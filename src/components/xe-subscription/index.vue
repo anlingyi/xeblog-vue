@@ -119,7 +119,7 @@
                         return
                     }
 
-                    this.lockRetry(15)
+                    this.lockRetry(60)
                     this.isShowEmail = false
                     this.$toast.success("验证码已发送到您的邮箱，请注意查收！", 5000)
                 })
