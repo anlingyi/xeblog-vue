@@ -1,6 +1,6 @@
 <template>
     <xe-container ref="xeContainer">
-        <div class="posts">
+        <div class="posts" @click="() => {this.showToc = false}">
             <h2 class="article-title" v-text="articleInfo.title">
             </h2>
             <div class="article-mark">
@@ -57,6 +57,10 @@
             </div>
             <div id="lv-container" :data-uid="livereUid" :data-id="livereId"></div>
         </div>
+        <div class="toc" v-show="showToc">
+            <div ref="tocNav"></div>
+        </div>
+        <div class="toc-btn" title="目录" @click="displayToc"><a href="javascript:;"><i class="fa fa-book"></i></a></div>
     </xe-container>
 </template>
 
@@ -92,6 +96,7 @@
                     id: '',
                     title: ''
                 },
+                showToc: false,
                 currentUrl: window.location.href,
                 livereId: 'city', // 来必力id
                 livereUid: 'MTAyMC80MzA2MC8xOTYwNg==' // 来必力uid
@@ -134,16 +139,27 @@
                             if (lang && hljs.getLanguage(lang)) {
                                 return '<pre class="hljs">' + hljs.highlight(lang, str).value + '</pre>'
                             }
-
                             return '';
                         }
                     })
+
+                    md.use(require('markdown-it-anchor').default, {
+                        permalinkClass: 'anchor',
+                        permalink: true,
+                        permalinkBefore: true,
+                        permalinkSymbol: '§',
+                    })
+                    md.use(require('markdown-it-toc-done-right').default, {
+                        callback: html => this.$refs.tocNav.innerHTML = html
+                    })
+
                     md.renderer.rules.image = (tokens, idx, options, env, self) => {
                         let token = tokens[idx]
                         token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
                         let result = self.renderToken(tokens, idx, options)
                         return '<div class="article-image">' + result + '</div>';
                     }
+
                     this.articleInfo.content = md.render(articleData.content)
 
                     const config = {
@@ -183,6 +199,9 @@
 
                     e.parentNode.insertBefore(j, e);
                 })(document, 'script');
+            },
+            displayToc() {
+                this.showToc = !this.showToc
             }
         }
     }
