@@ -64,6 +64,8 @@
     import '@/assets/lib/social-share/js/social-share.min.js'
     import * as api from '@/api'
     import MarkDownIt from 'markdown-it'
+    import hljs from 'highlight.js'
+    import 'highlight.js/styles/dracula.css'
 
     export default {
         data() {
@@ -127,7 +129,14 @@
                     }
 
                     let md = new MarkDownIt({
-                        html: true
+                        html: true,
+                        highlight: (str, lang) => {
+                            if (lang && hljs.getLanguage(lang)) {
+                                return '<pre class="hljs">' + hljs.highlight(lang, str).value + '</pre>'
+                            }
+
+                            return '';
+                        }
                     })
                     md.renderer.rules.image = (tokens, idx, options, env, self) => {
                         let token = tokens[idx]
