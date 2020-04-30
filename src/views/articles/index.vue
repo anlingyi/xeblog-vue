@@ -139,7 +139,7 @@
                             if (lang && hljs.getLanguage(lang)) {
                                 return '<pre class="hljs">' + hljs.highlight(lang, str).value + '</pre>'
                             }
-                            return '';
+                            return ''
                         }
                     })
 
@@ -185,20 +185,20 @@
             livereComments() {
                 window.livereOptions = {
                     refer: window.location.href.replace(/^(.*)(xeblog.cn*)/, 'www.$2')
-                };
+                }
                 (function (d, s) {
-                    let j, e = d.getElementsByTagName(s)[0];
+                    let j, e = d.getElementsByTagName(s)[0]
 
                     if (typeof LivereTower === 'function') {
-                        return;
+                        return
                     }
 
-                    j = d.createElement(s);
-                    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
-                    j.async = true;
+                    j = d.createElement(s)
+                    j.src = 'https://cdn-city.livere.com/js/embed.dist.js'
+                    j.async = true
 
-                    e.parentNode.insertBefore(j, e);
-                })(document, 'script');
+                    e.parentNode.insertBefore(j, e)
+                })(document, 'script')
             },
             displayToc() {
                 this.showToc = !this.showToc

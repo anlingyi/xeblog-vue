@@ -104,7 +104,7 @@
 
                 let scrollTop = e.scrollTop
                 if (scrollTop === 0) {
-                    return;
+                    return
                 }
 
                 let offset = Math.floor(scrollTop / 5)
