@@ -60,7 +60,7 @@ export function articleInfo(id) {
 // 发送验证码
 export function sendVerifyCode(data) {
     return request({
-        url: '/subscribe/sendVerifyCode',
+        url: 'subscribe/sendVerifyCode',
         method: 'get',
         params: {
             email: data
@@ -71,8 +71,17 @@ export function sendVerifyCode(data) {
 // 订阅
 export function subscribe(data) {
     return request({
-        url: '/subscribe',
+        url: 'subscribe',
         method: 'post',
+        params: data
+    })
+}
+
+// 归档
+export function archives(data) {
+    return request({
+        url: 'articles/archives',
+        method: 'get',
         params: data
     })
 }

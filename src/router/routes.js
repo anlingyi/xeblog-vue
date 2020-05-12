@@ -35,6 +35,14 @@ export default [
         component: () => import('@/views/categories')
     },
     {
+        path: '/archives',
+        name: 'archives',
+        meta: {
+            title: '归档'
+        },
+        component: () => import('@/views/archives')
+    },
+    {
         path: '*',
         component: () => import('@/views/error/404')
     }
