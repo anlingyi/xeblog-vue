@@ -41,10 +41,12 @@
         mounted() {
             this.getArchives()
 
-            let e = document.body.scrollTop ? document.body : document.documentElement
             document.addEventListener('scroll', () => {
-                let threshold = e.offsetWidth < 950 ? 70 : 5
-                if (e.scrollHeight - e.clientHeight - e.scrollTop < threshold) {
+                let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
+                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+                let clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
+
+                if (scrollHeight - scrollTop <= clientHeight) {
                     if (this.pageIndex < this.pages) {
                         this.pageIndex++
                         this.getArchives()

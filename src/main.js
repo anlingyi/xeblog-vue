@@ -5,6 +5,11 @@ import '@/components'
 import 'font-awesome/css/font-awesome.min.css'
 import Toast from './components/xe-toast'
 import {websiteInfo} from '@/api'
+import VConsole from 'vconsole'
+
+if (process.env.VUE_APP_DEBUG === 'true') {
+    new VConsole()
+}
 
 Vue.use(Toast)
 
