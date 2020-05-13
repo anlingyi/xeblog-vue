@@ -41,8 +41,8 @@
         mounted() {
             this.getArchives()
 
+            let e = document.body.scrollTop ? document.body : document.documentElement
             document.addEventListener('scroll', () => {
-                let e = document.body.scrollTop ? document.body : document.documentElement
                 let threshold = e.offsetWidth < 950 ? 70 : 5
                 if (e.scrollHeight - e.clientHeight - e.scrollTop < threshold) {
                     if (this.pageIndex < this.pages) {
@@ -82,7 +82,6 @@
                         current = this.archives[this.archives.length - 1]
                     }
 
-                    console.log(list)
                     for (let index in list) {
                         let obj = list[index]
                         let time = obj.createTime
@@ -165,8 +164,6 @@
                     border-radius: 50%;
                     background: #fff;
                     margin-right: 1rem;
-                    /*top: 50%;*/
-                    /*transform: translateY(-50%);*/
                 }
 
                 .content {
