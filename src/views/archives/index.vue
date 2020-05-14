@@ -42,10 +42,14 @@
             this.getArchives()
 
             document.addEventListener('scroll', () => {
+                // 文档实际高度（包括不可见内容的高度）
                 let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight
-                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
+                // 文档可见内容的高度
                 let clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
+                // 文档内容顶部（垂直滚动时顶部的内容会被隐藏）到它的视口可见内容（实际可以看见的内容顶部）的距离
+                let scrollTop = document.documentElement.scrollTop || document.body.scrollTop
 
+                // 判断垂直滚动条是否滚动到最底部： scrollHeight - scrollTop === clientHeight
                 if (scrollHeight - scrollTop <= clientHeight) {
                     if (this.pageIndex < this.pages) {
                         this.pageIndex++
