@@ -185,7 +185,8 @@
             livereComments() {
                 window.livereOptions = {
                     refer: window.location.href.replace(/^(.*)(xeblog.cn*)/, 'www.$2')
-                }
+                };
+
                 (function (d, s) {
                     let j, e = d.getElementsByTagName(s)[0]
 
