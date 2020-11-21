@@ -43,6 +43,14 @@ export default [
         component: () => import('@/views/archives')
     },
     {
+        path: '/footprint',
+        name: 'footprint',
+        meta: {
+            title: '足迹'
+        },
+        component: () => import('@/views/footprint')
+    },
+    {
         path: '*',
         component: () => import('@/views/error/404')
     }

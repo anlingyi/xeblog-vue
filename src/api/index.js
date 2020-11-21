@@ -85,3 +85,21 @@ export function archives(data) {
         params: data
     })
 }
+
+// 足迹列表
+export function footprintList(data) {
+    return request({
+        url: 'footprint/list',
+        method: 'get',
+        params: data
+    })
+}
+
+// 添加足迹
+export function addFootprint(data) {
+    return request({
+        url: 'footprint',
+        method: 'post',
+        data
+    })
+}
