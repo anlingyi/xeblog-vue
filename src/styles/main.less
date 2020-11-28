@@ -235,6 +235,116 @@ a {
         }
       }
     }
+
+    .footprint {
+      font-size: 0.9rem;
+
+      .address {
+        color: #444d56;
+      }
+
+      .statistics {
+        margin: 20px auto;
+        text-align: center;
+        color: #521e18;
+
+        img {
+          width: 1.6rem;
+          height: 1.6rem;
+          vertical-align: middle;
+        }
+      }
+
+      .list {
+        .info {
+          height: auto;
+          border: 1px solid #dcdddd;
+          border-radius: 5px;
+          background-color: #fff;
+          box-shadow: 0px 0px 5px 0px #ccc;
+          padding: 10px 10px;
+          margin: 10px auto;
+          font-size: 0.8rem;
+
+          .top {
+            width: 100%;
+
+            .address {
+              width: 90%;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              color: cadetblue;
+              float: left;
+            }
+
+            .distance {
+              text-align: right;
+              float: right;
+              width: 10%;
+              color: #66677c;
+            }
+          }
+
+          .body {
+            width: 100%;
+            margin-top: 20px;
+
+            .content {
+              padding: 15px 10px;
+              font-size: 0.9rem;
+              text-align: center;
+              color: #2a2a2a;
+
+              .nickname {
+                color: #521e18;
+                font-size: 0.9rem;
+                font-weight: bolder;
+              }
+            }
+
+            .image {
+              max-width: 53%;
+              max-height: 53%;
+              margin: 0 auto;
+              padding-bottom: 10px;
+
+              img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+              }
+            }
+
+            .bottom {
+              width: 100%;
+              height: 30px;
+
+              .date {
+                float: left;
+                line-height: 30px;
+                color: #66677c;
+              }
+
+              .tag {
+                float: right;
+
+                span {
+                  display: inline-block;
+                  background-color: #521e18;
+                  padding: 5px;
+                  color: @sidebar-color;
+                  border: 1px solid #dcdddd;
+                  box-shadow: 0px 0px 5px 0px #ccc;
+                  border-radius: 6px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   .headband {

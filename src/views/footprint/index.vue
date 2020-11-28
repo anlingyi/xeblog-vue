@@ -1,17 +1,46 @@
 <template>
   <xe-container>
     <div class="footprint">
-      {{ footprintInfo }}
-      <br/>
-      lng:{{ lng }}, lat:{{ lat }}
-      <br/>
-      address:{{ address }}
-    </div>
-    <div>
+      <div class="head">
+        <span class="address"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ positioning }} </span>
+        <i class="fa fa-refresh" aria-hidden="true" v-show="showRefresh" @click="getLocation"
+           style="cursor: pointer"></i>
+      </div>
+      <div class="statistics">
+        <img src="../../assets/images/footprint.png"/> 足迹：<span>{{ footprintInfo.total }}</span> ｜
+        <img src="../../assets/images/footprint-line.png"/> 当前：<span>{{ footprintInfo.currentTotal }}</span>
+      </div>
+      <div class="list">
+        <div class="info" v-for="footprint in footprintInfo.footprintList" :key="footprint.id">
+          <div class="top">
+            <div class="address" :title="footprint.address">
+              <i class="fa fa-location-arrow" aria-hidden="true"></i> {{ covertAddress(footprint.address) }}
+            </div>
+            <div class="distance">{{ footprint.distance }}M</div>
+          </div>
+          <div class="body">
+            <div class="content">
+              {{ footprint.content }} <span class="nickname">By:{{ footprint.nickname }}</span>
+            </div>
+            <div class="image" v-if="footprint.image">
+              <img :src="footprint.image"/>
+            </div>
+            <div class="bottom">
+              <div class="date" v-text="footprint.createTime"></div>
+              <div class="tag" v-if="footprint.tag">
+                <span v-text="footprint.tag"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      昵称：<input type="text" v-model="nickname">
       内容：<input type="text" v-model="content">
       标签：<input type="text" v-model="tag">
       图片：<input type="file" @change="selectFile" accept="image/*">
       <button @click="addFootprint">提交</button>
+
     </div>
   </xe-container>
 </template>
@@ -23,13 +52,20 @@ import axios from 'axios'
 export default {
   data() {
     return {
-      footprintInfo: {},
+      footprintInfo: {
+        footprintList: [],
+        total: 0,
+        currentTotal: 0
+      },
       lng: '',
       lat: '',
       address: '',
       image: '',
       tag: '',
-      content: ''
+      content: '',
+      nickname: '',
+      positioning: '',
+      showRefresh: false
     }
   },
   methods: {
@@ -38,8 +74,8 @@ export default {
     },
     getFootprintList() {
       api.footprintList({
-        longitude: this.lng, //120.078576
-        latitude: this.lat, //30.274975
+        longitude: this.lng,
+        latitude: this.lat,
       }).then(resp => {
         if (!resp.data || resp.data.length < 1) {
           this.$toast.info('没有足迹！')
@@ -64,6 +100,7 @@ export default {
       data.append('address', this.address)
       data.append('tag', this.tag)
       data.append('content', this.content)
+      data.append('nickname', this.nickname)
       if (this.image) {
         data.append('image', this.image)
       }
@@ -77,6 +114,8 @@ export default {
       })
     },
     getLocation() {
+      this.showRefresh = false
+      this.positioning = '定位中...'
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
             poi => {
@@ -86,6 +125,7 @@ export default {
                 this.getAddress(this.lng, this.lat)
                 this.getFootprintList()
               } else {
+                this.positioning = '定位失败！'
                 this.$toast.error("定位失败！")
               }
             },
@@ -103,6 +143,8 @@ export default {
                   msg = '获取位置信息超时！'
                   break
               }
+              this.positioning = '定位失败！'
+              this.showRefresh = true
               this.$toast.error(msg, 6000)
             },
             {
@@ -113,6 +155,8 @@ export default {
         )
       } else {
         this.$toast.error("不支持定位！", 0)
+        this.positioning = '定位失败！'
+        this.showRefresh = true
       }
     },
     getAddress(lng, lat) {
@@ -125,14 +169,18 @@ export default {
         console.log(resp)
         if (resp.data.info === 'OK') {
           this.address = resp.data.regeocode.formatted_address
-          return
         }
         if (!this.address) {
           this.$toast.error("获取位置信息失败！")
+          this.positioning = '定位失败！'
         }
+        this.positioning = this.covertAddress(this.address)
+        this.showRefresh = true
       }).catch(error => {
         console.log(error)
         this.$toast.error("获取位置信息失败！")
+        this.positioning = '定位失败！'
+        this.showRefresh = true
       })
     },
     gpsToAMap(lng, lat) {
@@ -174,6 +222,18 @@ export default {
       let mgLat = lat + dLat
       let mgLng = lng + dLng
       return mgLng + ',' + mgLat
+    },
+    covertAddress(address) {
+      const strs = ['镇', '县', '区', '市', '省']
+      let len = address.length - 1
+      let start = -1
+      for (let i in strs) {
+        start = address.lastIndexOf(strs[i])
+        if (start > -1 && start < len) {
+          break
+        }
+      }
+      return address.substring(start + 1)
     }
   },
   mounted() {
@@ -181,7 +241,3 @@ export default {
   }
 }
 </script>
-
-<style lang="less" scoped>
-
-</style>
