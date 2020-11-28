@@ -35,7 +35,7 @@
             </div>
             <transition name="fade">
                 <div class="menu" v-show="showMenu">
-                    <hr/>
+                    <div class="basic-line"></div>
                     <ul>
                         <li @click="to(menu.url)" v-for="menu in menuList" :key="menu.id"
                             :class="getSelectedCss(menu.url)">
