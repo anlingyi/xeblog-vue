@@ -7,8 +7,9 @@
            style="cursor: pointer"></i>
       </div>
       <div class="statistics">
-        <img src="../../assets/images/footprint.png"/> 足迹：<span>{{ footprintInfo.total }}</span> ｜
-        <img src="../../assets/images/footprint-line.png"/> 当前：<span>{{ footprintInfo.currentTotal }}</span>
+        Total: {<span>{{ footprintInfo.total }}</span>}
+        <img src="../../assets/images/footprint.png"/>
+        LBS: {<span>{{ footprintInfo.currentTotal }}</span>}
       </div>
       <div class="list">
         <div class="info" v-for="footprint in footprintInfo.footprintList" :key="footprint.id">
@@ -20,27 +21,33 @@
           </div>
           <div class="body">
             <div class="content">
-              {{ footprint.content }} <span class="nickname">By:{{ footprint.nickname }}</span>
+              {{ footprint.content }} <span class="by">By.<span class="nickname">{{ footprint.nickname }}</span></span>
             </div>
             <div class="image" v-if="footprint.image">
               <img :src="footprint.image"/>
             </div>
-            <div class="bottom">
-              <div class="date" v-text="footprint.createTime"></div>
-              <div class="tag" v-if="footprint.tag">
-                <span v-text="footprint.tag"></span>
-              </div>
+          </div>
+          <div class="bottom">
+            <div class="date" v-text="footprint.createTime"></div>
+            <div class="tag" v-if="footprint.tag">
+              <span v-text="footprint.tag"></span>
             </div>
           </div>
         </div>
       </div>
-
-      昵称：<input type="text" v-model="nickname">
-      内容：<input type="text" v-model="content">
-      标签：<input type="text" v-model="tag">
-      图片：<input type="file" @change="selectFile" accept="image/*">
-      <button @click="addFootprint">提交</button>
-
+      <div class="foot" v-show="showFootBtn" @click="() => this.showFootBtn = false">
+        <img src="../../assets/images/foot.png">
+      </div>
+      <div class="add" v-show="!showFootBtn">
+        <div class="form">
+          <div>昵称：<input type="text" v-model="nickname"></div>
+          <div>内容：<input type="text" v-model="content"></div>
+          <div>标签：<input type="text" v-model="tag"></div>
+          <div>图片：<input type="file" @change="selectFile" accept="image/*"></div>
+        </div>
+        <button @click="() => this.showFootBtn = true">不了</button>
+        <button @click="addFootprint">到此一游</button>
+      </div>
     </div>
   </xe-container>
 </template>
@@ -65,7 +72,8 @@ export default {
       content: '',
       nickname: '',
       positioning: '',
-      showRefresh: false
+      showRefresh: false,
+      showFootBtn: true
     }
   },
   methods: {
@@ -85,6 +93,7 @@ export default {
       })
     },
     addFootprint() {
+      this.showFootBtn = false;
       if (this.lng < 0 || this.lat < 0 || !this.address) {
         this.$toast.error('定位失败！')
         return;
@@ -166,7 +175,6 @@ export default {
           key: '164fdccf3c6a8341f23e5d903642391f'
         }
       }).then(resp => {
-        console.log(resp)
         if (resp.data.info === 'OK') {
           this.address = resp.data.regeocode.formatted_address
         }

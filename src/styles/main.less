@@ -2,10 +2,13 @@ body {
   margin: 0;
   padding: 0;
   background-color: #eee;
-  font-family: 'Comic Sans MS', 'Lato', "PingFang SC", "Microsoft YaHei", sans-serif;
+  font-family: 'Comic Sans MS', Lato, Helvetica, Tahoma, Arial, 'PingFang SC', STXihei, Heiti, SimSun, 'Microsoft YaHei', sans-serif;
   font-size: 16px;
   word-break: break-all;
+  -webkit-tap-highlight-color: transparent;
 }
+
+@font-tyzxs: 'Comic Sans MS', Lato, Helvetica, Tahoma, Arial, tyzxs;
 
 @font-face {
   font-family: 'tyzxs';
@@ -249,10 +252,33 @@ a {
         color: #521e18;
 
         img {
-          width: 1.6rem;
-          height: 1.6rem;
+          width: 2rem;
+          height: 2rem;
           vertical-align: middle;
         }
+      }
+
+      .foot {
+        position: fixed;
+        right: 5%;
+        bottom: 20%;
+        padding: 5px;
+        background-color: #e6e6e6;
+        box-shadow: 0px 0px 3px 0px #521e18;
+        border-radius: 50%;
+        cursor: pointer;
+
+        img {
+          width: 2rem;
+          height: 2rem;
+        }
+
+        &:hover {
+          box-shadow: 0px 0px 4px 0px #521e18;
+        }
+      }
+
+      .add {
       }
 
       .list {
@@ -286,20 +312,45 @@ a {
             }
           }
 
+          .bottom {
+            width: 100%;
+            height: 30px;
+
+            .date {
+              float: left;
+              line-height: 30px;
+              color: #66677c;
+            }
+
+            .tag {
+              float: right;
+
+              span {
+                display: inline-block;
+                background-color: #521e18;
+                padding: 5px;
+                color: @sidebar-color;
+                border: 1px solid #dcdddd;
+                box-shadow: 0px 0px 5px 0px #ccc;
+                border-radius: 6px;
+              }
+            }
+          }
+
           .body {
             width: 100%;
             margin-top: 20px;
+            text-align: center;
 
             .content {
               padding: 15px 10px;
               font-size: 0.9rem;
-              text-align: center;
               color: #2a2a2a;
 
-              .nickname {
+              .by {
                 color: #521e18;
-                font-size: 0.9rem;
-                font-weight: bolder;
+                font-size: 0.8rem;
+                font-weight: bold;
               }
             }
 
@@ -314,31 +365,6 @@ a {
                 height: auto;
                 max-width: 100%;
                 max-height: 100%;
-              }
-            }
-
-            .bottom {
-              width: 100%;
-              height: 30px;
-
-              .date {
-                float: left;
-                line-height: 30px;
-                color: #66677c;
-              }
-
-              .tag {
-                float: right;
-
-                span {
-                  display: inline-block;
-                  background-color: #521e18;
-                  padding: 5px;
-                  color: @sidebar-color;
-                  border: 1px solid #dcdddd;
-                  box-shadow: 0px 0px 5px 0px #ccc;
-                  border-radius: 6px;
-                }
               }
             }
           }
@@ -442,7 +468,7 @@ a {
       }
 
       .signature {
-        font-family: 'tyzxs';
+        font-family: @font-tyzxs;
         font-size: 1rem;
         //background-color: #59687b;
         //display: inline-block;
@@ -452,7 +478,7 @@ a {
       .username {
         margin-bottom: 10px;
         margin-top: -8px;
-        font-family: 'tyzxs';
+        font-family: @font-tyzxs;
         font-weight: bolder;
         font-size: 1rem;
       }
