@@ -97,7 +97,7 @@
                     title: ''
                 },
                 showToc: false,
-                currentUrl: window.location.href,
+                currentUrl: 'https://' + process.env.VUE_APP_DOMAIN + '/articles/' + this.$route.params.id,
                 livereId: 'city', // 来必力id
                 livereUid: 'MTAyMC80MzA2MC8xOTYwNg==' // 来必力uid
             }
@@ -184,7 +184,7 @@
             },
             livereComments() {
                 window.livereOptions = {
-                    refer: window.location.href.replace(/^(.*)(xeblog.cn*)/, 'www.$2')
+                    refer: this.currentUrl.replace('https://', '')
                 };
 
                 (function (d, s) {
