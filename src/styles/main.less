@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   background-color: #eee;
-  font-family: 'Comic Sans MS', Lato, Helvetica, Tahoma, Arial, 'PingFang SC', STXihei, Heiti, SimSun, 'Microsoft YaHei', sans-serif;
+  font-family: 'Comic Sans MS', Lato, Helvetica, Tahoma, Arial, 'PingFang SC', 'Microsoft YaHei', STXihei, Heiti, SimSun, sans-serif;
   font-size: 16px;
   word-break: break-all;
   -webkit-tap-highlight-color: transparent;
@@ -71,7 +71,7 @@ a {
     }
 
     .article-info-image {
-      max-width: 680px;
+      max-width: 580px;
       height: auto;
       text-align: center;
       margin: 10px auto;
@@ -324,15 +324,16 @@ a {
 
             .tag {
               float: right;
+              margin: 2px 0;
 
               span {
                 display: inline-block;
                 background-color: #521e18;
-                padding: 5px;
+                padding: 3px;
                 color: @sidebar-color;
                 border: 1px solid #dcdddd;
                 box-shadow: 0px 0px 5px 0px #ccc;
-                border-radius: 6px;
+                border-radius: 3px;
               }
             }
           }
@@ -365,6 +366,8 @@ a {
                 height: auto;
                 max-width: 100%;
                 max-height: 100%;
+                border-radius: 5px;
+                box-shadow: 0px 0px 5px 0px #ccc;
               }
             }
           }

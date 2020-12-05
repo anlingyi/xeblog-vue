@@ -157,7 +157,7 @@
                         let token = tokens[idx]
                         token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
                         let result = self.renderToken(tokens, idx, options)
-                        return '<div class="article-image">' + result + '</div>';
+                        return '<div class="article-info-image">' + result + '</div>';
                     }
 
                     this.articleInfo.content = md.render(articleData.content)

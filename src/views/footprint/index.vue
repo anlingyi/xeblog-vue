@@ -2,9 +2,11 @@
   <xe-container>
     <div class="footprint">
       <div class="head">
-        <span class="address"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ positioning }} </span>
-        <i class="fa fa-refresh" aria-hidden="true" v-show="showRefresh" @click="getLocation"
-           style="cursor: pointer"></i>
+        <span class="address">
+          <i class="fa fa-map-marker" aria-hidden="true"></i> {{ positioning }}
+          <i class="fa fa-refresh" aria-hidden="true" v-show="showRefresh" @click="getLocation"
+             style="cursor: pointer"></i>
+        </span>
       </div>
       <div class="statistics">
         Total: {<span>{{ footprintInfo.total }}</span>}
