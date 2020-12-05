@@ -6,7 +6,7 @@ const debug = process.env.VUE_APP_DEBUG
 
 const service = axios.create({
     baseURL: api_url,
-    timeout: 15000
+    timeout: 30000
 })
 
 function addLog(log) {
