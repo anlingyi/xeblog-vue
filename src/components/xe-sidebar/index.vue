@@ -44,8 +44,8 @@
                         <li @click="subscribe()"><i class="fa fa-feed"></i> 订阅</li>
                     </ul>
                     <div class="search-body">
-                        <input type="text" maxlength="15" placeholder="搜索..." v-model="query"/>&nbsp;
-                        <i class="fa fa-search search-btn" title="点击搜索" @click="search()"></i>
+                      <input type="text" maxlength="15" placeholder="搜索..." v-model="query" @keyup.enter="search"/>&nbsp;
+                      <i class="fa fa-search search-btn" title="点击搜索" @click="search()"></i>
                     </div>
                 </div>
             </transition>
