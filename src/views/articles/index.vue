@@ -4,9 +4,9 @@
             <h2 class="article-title" v-text="articleInfo.title">
             </h2>
             <div class="article-mark">
-                <i class="fa fa-calendar-o"></i>&nbsp;<span class="article-send-time"
-                                                            v-text="articleInfo.createTime"></span>&nbsp;|
-                <i class="fa fa-leaf"></i>&nbsp;<span class="article-category">
+              <i class="fa fa-calendar-check-o"></i>&nbsp;<span class="article-send-time"
+                                                                v-text="articleInfo.createTime"></span>&nbsp;|
+              <i class="fa fa-leaf"></i>&nbsp;<span class="article-category">
                 <a :href="'/?categoryId=' + articleInfo.categoryId + '&categoryName=' + articleInfo.categoryName"
                    v-text="articleInfo.categoryName"></a>
                 </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"

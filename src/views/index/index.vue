@@ -17,8 +17,9 @@
                     <a :href="'/articles/' + article.id" v-text="article.title"></a>
                 </h2>
                 <div class="article-mark">
-                    <i class="fa fa-calendar-o"></i> <span class="article-send-time" v-text="article.createTime"></span>&nbsp;|
-                    <i class="fa fa-leaf"></i> <span class="article-category">
+                  <i class="fa fa-calendar-check-o"></i> <span class="article-send-time"
+                                                               v-text="article.createTime"></span>&nbsp;|
+                  <i class="fa fa-leaf"></i> <span class="article-category">
                     <a :href="'/?categoryId=' + article.categoryId + '&categoryName=' + article.categoryName"
                        v-text="article.categoryName"></a>
                     </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
