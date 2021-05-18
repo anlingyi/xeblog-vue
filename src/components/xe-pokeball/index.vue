@@ -1,5 +1,5 @@
 <template>
-  <div class="xe-pokeball" v-drag>
+  <div class="xe-pokeball" v-drag @touchmove.prevent>
     <div class="ball">
       <div class="top" title="最热" @click="hotList"></div>
       <div class="center">
@@ -14,18 +14,35 @@
 import * as api from '@/api'
 
 export default {
+  data() {
+    return {
+      isDrag: false
+    }
+  },
   methods: {
     hotList() {
+      if (this.isDrag) {
+        return
+      }
+
       this.$router.push({
         path: '/?sort=2'
       })
     },
     latestList() {
+      if (this.isDrag) {
+        return
+      }
+
       this.$router.push({
         path: '/?sort=1'
       })
     },
     randomOne() {
+      if (this.isDrag) {
+        return
+      }
+
       api.randomArticle().then(resp => {
         const data = resp.data
         if (!data || this.$route.params.id == data) {
@@ -46,25 +63,34 @@ export default {
     }
   },
   directives: {
-    drag(el) {
+    drag(el, binding, vnode) {
       el.onmousedown = (e) => {
-        let startX = e.pageX - el.offsetLeft
-        let startY = e.pageY - el.offsetTop
+        const clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
+        const clientWidth = document.body.clientWidth
+        const elWidth = el.clientWidth
+        const elHeight = el.clientHeight
 
-        let clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
-        let clientWidth = document.body.clientWidth
+        const startX = e.pageX - el.offsetLeft
+        const startY = e.pageY - el.offsetTop
+        const startTime = new Date().getTime();
 
+        vnode.context.isDrag = false
         document.onmousemove = (e) => {
+          const endTime = new Date().getTime();
+          if (endTime - startTime > 50) {
+            vnode.context.isDrag = true
+          }
+
           let endX = e.pageX - startX
           endX = endX <= 0 ? 0 : endX;
-          if (endX + el.clientWidth >= clientWidth) {
-            endX = clientWidth - el.clientWidth
+          if (endX + elWidth >= clientWidth) {
+            endX = clientWidth - elWidth
           }
 
           let endY = e.pageY - startY
-          endY = endY <= 0 ? el.clientHeight / 2 : endY
-          if (endY + el.clientHeight / 2 >= clientHeight) {
-            endY = clientHeight - el.clientHeight / 2
+          endY = endY <= 0 ? elHeight / 2 : endY
+          if (endY + elHeight / 2 >= clientHeight) {
+            endY = clientHeight - elHeight / 2
           }
 
           el.style.left = endX + 'px'
@@ -75,14 +101,47 @@ export default {
           document.onmousemove = document.onmouseup = null
         }
       }
+
+      el.ontouchstart = (e) => {
+        const clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
+        const clientWidth = document.body.clientWidth
+        const elWidth = el.clientWidth
+        const elHeight = el.clientHeight
+
+        const touch = e.targetTouches[0]
+        const startX = touch.pageX - el.offsetLeft
+        const startY = touch.pageY - el.offsetTop
+
+        document.ontouchmove = (e) => {
+          const touch = e.targetTouches[0]
+          let endX = touch.pageX - startX
+          endX = endX <= 0 ? 0 : endX;
+          if (endX + elWidth >= clientWidth) {
+            endX = clientWidth - elWidth
+          }
+
+          let endY = touch.pageY - startY
+          endY = endY <= 0 ? elHeight / 2 : endY
+          if (endY + elHeight / 2 >= clientHeight) {
+            endY = clientHeight - elHeight / 2
+          }
+
+          el.style.left = endX + 'px'
+          el.style.top = endY + 'px'
+        }
+
+        document.ontouchend = () => {
+          document.ontouchmove = document.ontouchend = null
+        }
+      }
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-@ball-width: 60px;
-@ball-suture: 2px solid #1b1f23;
+@ball-width: 30px;
+@ball-suture: 1px;
 
 .xe-pokeball {
   z-index: 9999999;
@@ -90,48 +149,61 @@ export default {
   height: @ball-width;
   position: fixed;
   top: 50%;
-  right: 1%;
+  right: 2%;
   transform: translateY(-50%);
 
   .ball {
-    position: relative;
-    border-radius: 50%;
-    box-shadow: 0px 0px 1px 0px #ccc;
+    position: absolute;
+    width: @ball-width;
+    height: @ball-width;
 
-    .top {
-      width: @ball-width;
-      height: @ball-width / 2;
-      background-color: #ca1324;
-      border-radius: @ball-width @ball-width 0 0;
-      border-bottom: @ball-suture;
+    &:hover {
+      width: @ball-width * 2;
+      height: @ball-width * 2;
+
+      .top {
+        border-bottom-width: @ball-suture * 2;
+      }
+
+      .bottom {
+        border-top-width: @ball-suture * 2;
+      }
+
+      .center {
+        border-width: @ball-suture * 4;
+      }
     }
 
-    .top:hover {
-      cursor: pointer;
-      background-color: #f50524;
+    .top {
+      height: 50%;
+      background-color: #ca1324;
+      border-radius: 100px 100px 0 0;
+      border-bottom: @ball-suture solid #1b1f23;
+
+      &:hover {
+        cursor: pointer;
+        background-color: #f50524;
+      }
     }
 
     .bottom {
-      width: @ball-width;
-      height: @ball-width / 2;
-      background-color: #fafafa;
-      border-radius: 0 0 @ball-width @ball-width;
-      border-top: @ball-suture;
-    }
+      height: 50%;
+      background-color: #f1f1f1;
+      border-radius: 0 0 100px 100px;
+      border-top: @ball-suture solid #1b1f23;
 
-    .bottom:hover {
-      cursor: pointer;
-      background-color: #fff;
+      &:hover {
+        cursor: pointer;
+        background-color: #fff;
+      }
     }
-
-    @center-width: @ball-width / 3;
 
     .center {
       position: absolute;
-      width: @center-width;
-      height: @center-width;
+      width: 30%;
+      height: 30%;
       background-color: #f6f5f5;
-      border: 3px solid #1b1f23;
+      border: @ball-suture * 2 solid #1b1f23;
       border-radius: 50%;
       left: 50%;
       top: 50%;
@@ -141,19 +213,19 @@ export default {
 
     .open {
       position: absolute;
-      width: @center-width / 1.5;
-      height: @center-width / 1.5;
+      width: 80%;
+      height: 80%;
       background-color: #ffffff;
       border-radius: 50%;
       left: 50%;
       top: 50%;
       transform: translateX(-50%) translateY(-50%);
       box-shadow: 0px 0px 5px 0px #ccc;
-    }
 
-    .open:hover {
-      background-color: #f5f3f3;
-      box-shadow: 0px 0px 10px 0px #bf0606;
+      &:hover {
+        background-color: #f5f3f3;
+        box-shadow: 0px 0px 10px 0px #bf0606;
+      }
     }
   }
 
