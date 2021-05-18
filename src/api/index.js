@@ -103,3 +103,11 @@ export function addFootprint(data) {
         data
     })
 }
+
+// 随机文章
+export function randomArticle() {
+    return request({
+        url: 'articles/random',
+        method: 'get'
+    })
+}
