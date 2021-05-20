@@ -5,12 +5,16 @@
             </h2>
             <div class="article-mark">
               <i class="fa fa-calendar-check-o"></i>&nbsp;<span class="article-send-time"
-                                                                v-text="articleInfo.createTime"></span>&nbsp;|
+                                                                v-text="articleInfo.createTime"></span>
+              <span class="article-seg">｜</span>
               <i class="fa fa-leaf"></i>&nbsp;<span class="article-category">
                 <a :href="'/?categoryId=' + articleInfo.categoryId + '&categoryName=' + articleInfo.categoryName"
                    v-text="articleInfo.categoryName"></a>
-                </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
-                                                                    v-text="articleInfo.pageviews"></span>
+                </span>
+              <span class="article-seg">｜</span>
+              <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
+                                                   v-text="articleInfo.pageviews"></span>
+              <span v-if="articleInfo.top">&nbsp;<i class="fa fa-diamond" title="置顶" style="color: #45b7d9"></i></span>
             </div>
             <div class="article-info markdown-body" v-html="articleInfo.content">
             </div>
@@ -76,17 +80,18 @@
             return {
                 articleInfo: {
                     id: '',
-                    title: '',
-                    categoryName: '',
-                    tags: [],
-                    pageviews: '',
-                    author: '',
-                    content: '',
-                    createTime: '',
-                    updateTime: '',
-                    categoryId: '',
-                    cover: '',
-                    brief: ''
+                  title: '',
+                  categoryName: '',
+                  tags: [],
+                  pageviews: '',
+                  author: '',
+                  content: '',
+                  createTime: '',
+                  updateTime: '',
+                  categoryId: '',
+                  cover: '',
+                  brief: '',
+                  top: ''
                 },
                 previous: {
                     id: '',
@@ -120,17 +125,18 @@
                     document.title = document.title.replace('xeblog', articleData.title)
 
                     this.articleInfo = {
-                        id: articleData.id,
-                        title: articleData.title,
-                        categoryName: articleData.categoryName,
-                        tags: articleData.tag ? articleData.tag.split(',') : [],
-                        pageviews: articleData.pageviews,
-                        author: articleData.author,
-                        createTime: articleData.createTime,
-                        updateTime: articleData.updateTime,
-                        categoryId: articleData.categoryId,
-                        cover: articleData.cover,
-                        brief: articleData.brief
+                      id: articleData.id,
+                      title: articleData.title,
+                      categoryName: articleData.categoryName,
+                      tags: articleData.tag ? articleData.tag.split(',') : [],
+                      pageviews: articleData.pageviews,
+                      author: articleData.author,
+                      createTime: articleData.createTime,
+                      updateTime: articleData.updateTime,
+                      categoryId: articleData.categoryId,
+                      cover: articleData.cover,
+                      brief: articleData.brief,
+                      top: articleData.top
                     }
 
                     let md = new MarkDownIt({
