@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <div class="xe-pokeball" v-drag @touchmove.prevent>
+  <div class="xe-pokeball">
+    <div class="ball-wrap" v-drag @touchmove.prevent>
       <div class="ball">
         <div class="top" title="最热" @click="hotList"></div>
         <div class="center">
@@ -415,73 +415,161 @@ export default {
   },
   directives: {
     drag(el, binding, vnode) {
-      el.onmousedown = (e) => {
-        const clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
-        const clientWidth = document.body.clientWidth
-        const elWidth = el.clientWidth
-        const elHeight = el.clientHeight
+      /**
+       * 获取客户端可见内容的高度
+       *
+       * @returns {number}
+       */
+      const getClientHeight = () => {
+        return window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
+      }
 
-        const startX = e.pageX - el.offsetLeft
-        const startY = e.pageY - el.offsetTop
-        const startTime = new Date().getTime();
+      /**
+       * 获取客户端可见内容的宽度
+       *
+       * @returns {number}
+       */
+      const getClientWidth = () => {
+        return window.innerWidth || Math.min(document.documentElement.clientWidth, document.body.clientWidth)
+      }
 
-        vnode.context.isDrag = false
-        document.onmousemove = (e) => {
-          const endTime = new Date().getTime();
-          if (endTime - startTime > 50) {
-            vnode.context.isDrag = true
-          }
-
-          let endX = e.pageX - startX
-          endX = endX <= 0 ? 0 : endX;
-          if (endX + elWidth >= clientWidth) {
-            endX = clientWidth - elWidth
-          }
-
-          let endY = e.pageY - startY
-          endY = endY <= 0 ? elHeight / 2 : endY
-          if (endY + elHeight / 2 >= clientHeight) {
-            endY = clientHeight - elHeight / 2
-          }
-
-          el.style.left = endX + 'px'
-          el.style.top = endY + 'px'
+      /**
+       * 获取元素顶点x轴坐标（左上顶点）
+       *
+       * e.clientX:鼠标相对客户端（客户端左上顶点）的x轴坐标
+       * el.offsetLeft:元素顶点（左上顶点）相对客户端（客户端左上顶点）的x轴坐标（元素必须完全脱离文档流，position: fixed）
+       * el.clientWidth:元素宽度
+       *
+       * @param el
+       * @param e
+       * @param startX
+       * @returns {number}
+       */
+      const getX = (el, e, startX) => {
+        if (startX === null) {
+          // 返回当前x轴位置
+          return e.clientX - el.offsetLeft
         }
 
+        // 客户端可视宽度
+        const clientWidth = getClientWidth()
+        // 元素自身宽度
+        const elWidth = el.clientWidth
+
+        // 移动到x轴位置
+        let x = e.clientX - startX
+        // 水平方向边界处理
+        if (x <= 0) {
+          // x轴最小为0
+          x = 0
+        } else if (x + elWidth > clientWidth) {
+          // x是左上顶点的坐标，是否触碰到右边边界（超出可视宽度）要通过右顶点判断，所以需要加上元素自身宽度
+          x = clientWidth - elWidth
+        }
+
+        return x
+      }
+
+      /**
+       * 获取元素顶点y轴坐标（左上顶点）
+       *
+       * e.clientY:鼠标相对客户端（客户端左上顶点）的y轴坐标
+       * el.offsetTop:元素顶点（左上顶点）相对客户端（客户端左上顶点）的y轴坐标（元素必须完全脱离文档流，position: fixed）
+       * el.clientHeight:元素高度
+       *
+       * @param el
+       * @param e
+       * @param startY
+       * @returns {number}
+       */
+      const getY = (el, e, startY) => {
+        if (startY === null) {
+          // 返回当前x轴位置
+          return e.clientY - el.offsetTop
+        }
+
+        // 客户端可视高度
+        const clientHeight = getClientHeight()
+        // 元素自身高度
+        const elHeight = el.clientHeight
+
+        // 移动到y轴位置
+        let y = e.clientY - startY
+        // 垂直方向边界处理
+        if (y <= 0) {
+          // y轴最小为0
+          y = 0
+        } else if (y + elHeight > clientHeight) {
+          // 同理，判断是否超出可视高度要加上自身高度
+          y = clientHeight - elHeight
+        }
+
+        return y
+      }
+
+      /**
+       * 监听鼠标按下事件（PC端拖动）
+       *
+       * @param e
+       */
+      el.onmousedown = (e) => {
+        vnode.context.isDrag = false
+
+        // 获取当前位置信息 (startX,startY)
+        const startX = getX(el, e, null)
+        const startY = getY(el, e, null)
+
+        /**
+         * 监听鼠标移动事件
+         *
+         * @param e
+         */
+        document.onmousemove = (e) => {
+          // 标记正在移动，解决元素移动后点击事件被触发的问题
+          vnode.context.isDrag = true
+
+          // 更新元素位置（移动元素）
+          el.style.left = getX(el, e, startX) + 'px'
+          el.style.top = getY(el, e, startY) + 'px'
+        }
+
+        /**
+         * 监听鼠标松开事件
+         */
         document.onmouseup = () => {
+          // 移除鼠标相关事件，防止元素无法脱离鼠标
           document.onmousemove = document.onmouseup = null
         }
       }
 
+      /**
+       * 监听手指按下事件（移动端拖动）
+       * @param e
+       */
       el.ontouchstart = (e) => {
-        const clientHeight = window.innerHeight || Math.min(document.documentElement.clientHeight, document.body.clientHeight)
-        const clientWidth = document.body.clientWidth
-        const elWidth = el.clientWidth
-        const elHeight = el.clientHeight
-
+        // 获取被触摸的元素
         const touch = e.targetTouches[0]
-        const startX = touch.pageX - el.offsetLeft
-        const startY = touch.pageY - el.offsetTop
+        // 获取当前位置信息 (startX,startY)
+        const startX = getX(el, touch, null)
+        const startY = getY(el, touch, null)
 
+        /**
+         * 监听手指移动事件
+         * @param e
+         */
         document.ontouchmove = (e) => {
+          // 获取被触摸的元素
           const touch = e.targetTouches[0]
-          let endX = touch.pageX - startX
-          endX = endX <= 0 ? 0 : endX;
-          if (endX + elWidth >= clientWidth) {
-            endX = clientWidth - elWidth
-          }
-
-          let endY = touch.pageY - startY
-          endY = endY <= 0 ? elHeight / 2 : endY
-          if (endY + elHeight / 2 >= clientHeight) {
-            endY = clientHeight - elHeight / 2
-          }
-
-          el.style.left = endX + 'px'
-          el.style.top = endY + 'px'
+          // 更新元素位置（移动元素）
+          el.style.left = getX(el, touch, startX) + 'px'
+          el.style.top = getY(el, touch, startY) + 'px'
         }
 
+        /**
+         * 监听手指移开事件
+         */
         document.ontouchend = () => {
+          // 移除touch相关事件，防止元素无法脱离手指
           document.ontouchmove = document.ontouchend = null
         }
       }
@@ -491,106 +579,107 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@ball-width: 30px;
-@ball-suture: 1px;
-
-.pokemon {
-  position: absolute;
-  z-index: 99999999;
-
-  img {
-    position: fixed;
-    bottom: 5%;
-    right: 5%;
-    cursor: pointer;
-  }
-}
-
 .xe-pokeball {
-  z-index: 9999999;
-  width: @ball-width;
-  height: @ball-width;
-  position: fixed;
-  top: 50%;
-  right: 2%;
-  transform: translateY(-50%);
-
-  .ball {
+  .pokemon {
     position: absolute;
-    width: @ball-width;
-    height: @ball-width;
+    z-index: 99999999;
 
-    &:hover {
-      width: @ball-width * 2;
-      height: @ball-width * 2;
+    img {
+      position: fixed;
+      bottom: 5%;
+      right: 5%;
+      cursor: pointer;
+    }
+  }
+
+  @ball-diameter: 30px;
+  @ball-suture: 1px;
+
+  .ball-wrap {
+    z-index: 9999999;
+    width: @ball-diameter;
+    height: @ball-diameter;
+    position: fixed;
+    top: 50%;
+    right: 2%;
+
+    .ball {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        width: @ball-diameter * 2;
+        height: @ball-diameter * 2;
+
+        .top {
+          border-bottom-width: @ball-suture * 2;
+        }
+
+        .bottom {
+          border-top-width: @ball-suture * 2;
+        }
+
+        .center {
+          border-width: @ball-suture * 4;
+        }
+      }
 
       .top {
-        border-bottom-width: @ball-suture * 2;
+        height: 50%;
+        background-color: #ca1324;
+        border-radius: 100px 100px 0 0;
+        border-bottom: @ball-suture solid #1b1f23;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #f50524;
+        }
       }
 
       .bottom {
-        border-top-width: @ball-suture * 2;
+        height: 50%;
+        background-color: #f1f1f1;
+        border-radius: 0 0 100px 100px;
+        border-top: @ball-suture solid #1b1f23;
+
+        &:hover {
+          cursor: pointer;
+          background-color: #fff;
+        }
       }
 
       .center {
-        border-width: @ball-suture * 4;
-      }
-    }
-
-    .top {
-      height: 50%;
-      background-color: #ca1324;
-      border-radius: 100px 100px 0 0;
-      border-bottom: @ball-suture solid #1b1f23;
-
-      &:hover {
+        position: absolute;
+        width: 30%;
+        height: 30%;
+        background-color: #f6f5f5;
+        border: @ball-suture * 2 solid #1b1f23;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
         cursor: pointer;
-        background-color: #f50524;
+      }
+
+      .open {
+        position: absolute;
+        width: 80%;
+        height: 80%;
+        background-color: #ffffff;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        box-shadow: 0px 0px 5px 0px #ccc;
+
+        &:hover {
+          background-color: #f5f3f3;
+          box-shadow: 0px 0px 10px 0px #bf0606;
+        }
       }
     }
 
-    .bottom {
-      height: 50%;
-      background-color: #f1f1f1;
-      border-radius: 0 0 100px 100px;
-      border-top: @ball-suture solid #1b1f23;
-
-      &:hover {
-        cursor: pointer;
-        background-color: #fff;
-      }
-    }
-
-    .center {
-      position: absolute;
-      width: 30%;
-      height: 30%;
-      background-color: #f6f5f5;
-      border: @ball-suture * 2 solid #1b1f23;
-      border-radius: 50%;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      cursor: pointer;
-    }
-
-    .open {
-      position: absolute;
-      width: 80%;
-      height: 80%;
-      background-color: #ffffff;
-      border-radius: 50%;
-      left: 50%;
-      top: 50%;
-      transform: translateX(-50%) translateY(-50%);
-      box-shadow: 0px 0px 5px 0px #ccc;
-
-      &:hover {
-        background-color: #f5f3f3;
-        box-shadow: 0px 0px 10px 0px #bf0606;
-      }
-    }
   }
-
 }
 </style>
