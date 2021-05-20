@@ -434,10 +434,11 @@ export default {
       }
 
       /**
-       * 获取元素顶点x轴坐标（左上顶点）
+       * startX = null:获取鼠标相对于元素（左上顶点）的x轴坐标（移动前坐标）
+       * startX != null:获取移动后的左上顶点x轴坐标
        *
        * e.clientX:鼠标相对客户端（客户端左上顶点）的x轴坐标
-       * el.offsetLeft:元素顶点（左上顶点）相对客户端（客户端左上顶点）的x轴坐标（元素必须完全脱离文档流，position: fixed）
+       * el.offsetLeft:元素顶点（左上顶点）相对客户端（客户端左上顶点）的x轴坐标（元素必须脱离文档流，position: fixed or absolute）
        * el.clientWidth:元素宽度
        *
        * @param el
@@ -447,7 +448,7 @@ export default {
        */
       const getX = (el, e, startX) => {
         if (startX === null) {
-          // 返回当前x轴位置
+          // 返回鼠标相对于元素（左上顶点）的x轴坐标
           return e.clientX - el.offsetLeft
         }
 
@@ -471,10 +472,11 @@ export default {
       }
 
       /**
-       * 获取元素顶点y轴坐标（左上顶点）
+       * startY = null:获取鼠标相对于元素（左上顶点）的y轴坐标（移动前坐标）
+       * startY != null:获取移动后的左上顶点y轴坐标
        *
        * e.clientY:鼠标相对客户端（客户端左上顶点）的y轴坐标
-       * el.offsetTop:元素顶点（左上顶点）相对客户端（客户端左上顶点）的y轴坐标（元素必须完全脱离文档流，position: fixed）
+       * el.offsetTop:元素顶点（左上顶点）相对客户端（客户端左上顶点）的y轴坐标（元素必须脱离文档流，position: fixed or absolute）
        * el.clientHeight:元素高度
        *
        * @param el
@@ -484,7 +486,7 @@ export default {
        */
       const getY = (el, e, startY) => {
         if (startY === null) {
-          // 返回当前x轴位置
+          // 返回鼠标相对于元素（左上顶点）的y轴坐标
           return e.clientY - el.offsetTop
         }
 
