@@ -21,12 +21,15 @@
                 </h2>
                 <div class="article-mark">
                   <i class="fa fa-calendar-check-o"></i> <span class="article-send-time"
-                                                               v-text="article.createTime"></span>&nbsp;|
+                                                               v-text="article.createTime"></span>
+                  <span class="article-seg">｜</span>
                   <i class="fa fa-leaf"></i> <span class="article-category">
                     <a :href="'/?categoryId=' + article.categoryId + '&categoryName=' + article.categoryName"
                        v-text="article.categoryName"></a>
-                    </span>&nbsp;| <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
-                                                                        v-text="article.pageviews"></span>
+                    </span>
+                  <span class="article-seg">｜</span>
+                  <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count" v-text="article.pageviews"></span>
+                  <span v-if="article.top">&nbsp;<i class="fa fa-diamond" title="置顶" style="color: #45b7d9"></i></span>
                 </div>
                 <div class="article-info" v-text="article.brief">
                 </div>
