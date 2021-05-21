@@ -31,7 +31,7 @@
                   <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count" v-text="article.pageviews"></span>
                   <span v-if="article.top">&nbsp;<i class="fa fa-diamond" title="置顶" style="color: #45b7d9"></i></span>
                 </div>
-                <div class="article-info" v-text="article.brief">
+                <div class="article-info" v-html="article.brief">
                 </div>
                 <div class="article-info-image" v-if="article.cover !== ''">
                     <img :src="article.cover">
