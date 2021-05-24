@@ -168,15 +168,15 @@
 
                     this.articleInfo.content = md.render(articleData.content)
 
-                    const config = {
-                      sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
-                      title: document.title,
-                      description: this.articleInfo.brief ? this.articleInfo.brief :
-                          this.articleInfo.content.replace(/<.*?>\s*/g, "").substring(0, 120),
-                      image: this.articleInfo.cover,
-                      source: this.currentUrl,
-                      url: this.currentUrl
-                    }
+                    const desc = this.articleInfo.brief ? this.articleInfo.brief : this.articleInfo.content
+                  const config = {
+                    sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
+                    title: document.title,
+                    description: desc.replace(/<.*?>\s*/g, "").substring(0, 120),
+                    image: this.articleInfo.cover,
+                    source: this.currentUrl,
+                    url: this.currentUrl
+                  }
                     socialShare('.share-body', config)
 
                     if (data.previous) {
