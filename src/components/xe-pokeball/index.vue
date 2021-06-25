@@ -410,7 +410,9 @@ export default {
   },
   watch: {
     '$route'(to, from) {
-      this.$router.go(0);
+      if (to.path !== from.path) {
+        this.$router.go(0);
+      }
     }
   },
   directives: {
