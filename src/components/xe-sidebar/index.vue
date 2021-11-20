@@ -9,29 +9,36 @@
                     <img :src="userInfo.avatar" @click.prevent="backTop">
                 </div>
                 <div class="username">
+                  <div class="name">
                     {{ userInfo.name }}
+                  </div>
                 </div>
-                <transition name="fade">
-                    <div class="signature" v-show="showMenu">
-                        {{ userInfo.signature }}
-                    </div>
-                </transition>
-                <div class="statistics">
+              <transition name="fade">
+                <div v-show="showMenu">
+                  <div class="signature">
+                    {{ userInfo.signature }}
+                  </div>
+                  <div class="statistics">
                     <ul>
-                        <li>
-                            <div class="val">{{ userInfo.articleCount }}</div>
-                            <div>日志</div>
-                        </li>
-                        <li>
-                            <div class="val">{{ userInfo.categoryCount }}</div>
-                            <div>分类</div>
-                        </li>
-                        <li>
-                            <div class="val">{{ userInfo.tagCount }}</div>
-                            <div>标签</div>
-                        </li>
+                      <li>
+                        <div class="val">{{ userInfo.articleCount }}</div>
+                        <div>日志</div>
+                      </li>
+                      <li>
+                        <div class="val">{{ userInfo.categoryCount }}</div>
+                        <div>分类</div>
+                      </li>
+                      <li>
+                        <div class="val">{{ userInfo.tagCount }}</div>
+                        <div>标签</div>
+                      </li>
                     </ul>
+                  </div>
+                  <div class="word-count">
+                    已累积写作 {{ userInfo.wordCount.toLocaleString() }} 字。
+                  </div>
                 </div>
+                </transition>
             </div>
             <transition name="fade">
                 <div class="menu" v-show="showMenu">
@@ -64,12 +71,13 @@
                 showMenu: false,
                 menuList: [],
                 userInfo: {
-                    avatar: '',
-                    name: '',
-                    signature: '',
-                    articleCount: 0,
-                    categoryCount: 0,
-                    tagCount: 0
+                  avatar: '',
+                  name: '',
+                  signature: '',
+                  articleCount: 0,
+                  categoryCount: 0,
+                  tagCount: 0,
+                  wordCount: 0
                 },
                 query: ''
             }

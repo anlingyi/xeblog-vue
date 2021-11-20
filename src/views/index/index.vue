@@ -28,8 +28,9 @@
                        v-text="article.categoryName"></a>
                     </span>
                   <span class="article-seg">｜</span>
-                  <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count" v-text="article.pageviews"></span>
-                  <span v-if="article.top">&nbsp;<i class="fa fa-diamond" title="置顶" style="color: #45b7d9"></i></span>
+                  <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
+                                                       v-text="article.pageviews.toLocaleString()"></span>
+                  <span v-if="article.top">&nbsp;<i class="fa fa-diamond" title="推荐" style="color: #45b7d9"></i></span>
                 </div>
                 <div class="article-info" v-html="article.brief">
                 </div>

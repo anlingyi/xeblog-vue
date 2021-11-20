@@ -13,8 +13,12 @@
                 </span>
               <span class="article-seg">｜</span>
               <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
-                                                   v-text="articleInfo.pageviews"></span>
-              <span v-if="articleInfo.top">&nbsp;<i class="fa fa-diamond" title="置顶" style="color: #45b7d9"></i></span>
+                                                   v-text="articleInfo.pageviews.toLocaleString()"></span>
+              <span class="article-seg">｜</span>
+              <i class="fa fa-pencil"></i> <span class="article-word-count">{{
+                articleInfo.wordCount.toLocaleString()
+              }}字</span>
+              <span v-if="articleInfo.top">&nbsp;<i class="fa fa-diamond" title="推荐" style="color: #45b7d9"></i></span>
             </div>
             <div class="article-info markdown-body" v-html="articleInfo.content">
             </div>
@@ -91,7 +95,8 @@
                   categoryId: '',
                   cover: '',
                   brief: '',
-                  top: ''
+                  top: '',
+                  wordCount: ''
                 },
                 previous: {
                     id: '',
@@ -136,7 +141,8 @@
                       categoryId: articleData.categoryId,
                       cover: articleData.cover,
                       brief: articleData.brief,
-                      top: articleData.top
+                      top: articleData.top,
+                      wordCount: articleData.wordCount
                     }
 
                     let md = new MarkDownIt({
