@@ -30,7 +30,8 @@
                   <span class="article-seg">｜</span>
                   <i class="fa fa-eye"></i>&nbsp;<span class="article-read-count"
                                                        v-text="article.pageviews.toLocaleString()"></span>
-                  <span v-if="article.top">&nbsp;<i class="fa fa-diamond" title="推荐" style="color: #45b7d9"></i></span>
+                  <span v-if="article.top || article.isRcmd">&nbsp;<i class="fa fa-diamond" title="推荐"
+                                                                      :style="{color: article.isRcmd ? '#d94568' : article.top ? '#45b7d9' : ''}"></i></span>
                 </div>
                 <div class="article-info" v-html="article.brief">
                 </div>
