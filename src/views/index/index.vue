@@ -1,15 +1,18 @@
 <template>
     <xe-container>
-        <div class="queryData">
-          <div v-if="this.queryData.tag !== ''">
-            <span>标签：</span><span class="tag">{{ this.queryData.tag }}</span>
-          </div>
-          <div v-if="categoryName !== ''">
-            <span>分类：</span><span class="category">{{ this.categoryName }}</span>
-          </div>
-          <div v-if="queryData.query !== ''">
-            <span>搜索关键字：</span> <span class="keyword">" {{ this.queryData.query }} "</span>
-          </div>
+      <div>
+        <xe-recommend/>
+      </div>
+      <div class="queryData">
+        <div v-if="this.queryData.tag !== ''">
+          <span>标签：</span><span class="tag">{{ this.queryData.tag }}</span>
+        </div>
+        <div v-if="categoryName !== ''">
+          <span>分类：</span><span class="category">{{ this.categoryName }}</span>
+        </div>
+        <div v-if="queryData.query !== ''">
+          <span>搜索关键字：</span> <span class="keyword">" {{ this.queryData.query }} "</span>
+        </div>
           <div v-if="queryData.sort !== ''">
             <span>排序：</span> <span class="sort">{{ this.queryData.sort == 2 ? '最热' : '最新' }}</span>
           </div>

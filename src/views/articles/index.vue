@@ -55,17 +55,20 @@
                 </ul>
             </div>
             <div class="nav">
-                <div class="previous">
-                    <a :href="previous.id ? '/articles/' + previous.id : 'javascript:;'"><i
-                            class="fa fa-chevron-left"></i>{{ previous.title ? previous.title : '没有了' }}</a>
-                </div>
-                <div class="next">
-                    <a :href="next.id ? '/articles/' + next.id : 'javascript:;'">{{ next.title ? next.title : '没有了' }}<i
-                            class="fa fa-chevron-right"></i></a>
-                </div>
-                <div style="clear:both;"></div>
+              <div class="previous">
+                <a :href="previous.id ? '/articles/' + previous.id : 'javascript:;'"><i
+                    class="fa fa-chevron-left"></i>{{ previous.title ? previous.title : '没有了' }}</a>
+              </div>
+              <div class="next">
+                <a :href="next.id ? '/articles/' + next.id : 'javascript:;'">{{ next.title ? next.title : '没有了' }}<i
+                    class="fa fa-chevron-right"></i></a>
+              </div>
+              <div style="clear:both;"></div>
             </div>
-            <div id="lv-container" :data-uid="livereUid" :data-id="livereId"></div>
+          <div>
+            <xe-recommend/>
+          </div>
+          <div id="lv-container" :data-uid="livereUid" :data-id="livereId"></div>
         </div>
         <div class="toc" v-show="showToc">
             <div ref="tocNav"></div>

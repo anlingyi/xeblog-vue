@@ -111,3 +111,11 @@ export function randomArticle() {
         method: 'get'
     })
 }
+
+// 获取推荐文章列表
+export function getRecommendList() {
+    return request({
+        url: 'articles/recommend',
+        method: 'get'
+    })
+}
