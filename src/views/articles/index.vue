@@ -18,8 +18,9 @@
               <i class="fa fa-pencil"></i> <span class="article-word-count">{{
                 articleInfo.wordCount.toLocaleString()
               }}字</span>
-              <span v-if="articleInfo.top || articleInfo.isRcmd">&nbsp;<i class="fa fa-diamond" title="推荐"
-                                                                          :style="{color: articleInfo.isRcmd ? '#d94568' : articleInfo.top ? '#45b7d9' : ''}"></i></span>
+              <span v-if="articleInfo.top || articleInfo.isRcmd">&nbsp;<i class="fa fa-diamond"
+                                                                          :title="articleInfo.top ? '置顶' : articleInfo.isRcmd ? '推荐' : ''"
+                                                                          :style="{color: articleInfo.top ? '#45b7d9' : articleInfo.isRcmd ? '#d94568' : ''}"></i></span>
             </div>
             <div class="article-info markdown-body" v-html="articleInfo.content">
             </div>
