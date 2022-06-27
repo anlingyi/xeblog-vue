@@ -177,7 +177,15 @@
                   }
 
                   md.use(require('markdown-it-toc-done-right').default, {
-                    callback: html => setTimeout(this.$refs.tocNav.innerHTML = html, 1000)
+                    callback: html => {
+                      try {
+                        setTimeout(() => {
+                          this.$refs.tocNav.innerHTML = html
+                        }, 1500)
+                      } catch (error) {
+                        console.error(error)
+                      }
+                    }
                   })
 
                   this.articleInfo.content = md.render(articleData.content)
