@@ -165,23 +165,24 @@
                     md.use(require('markdown-it-anchor').default, {
                         permalinkClass: 'anchor',
                         permalink: true,
-                        permalinkBefore: true,
-                        permalinkSymbol: '§',
-                    })
-                    md.use(require('markdown-it-toc-done-right').default, {
-                        callback: html => this.$refs.tocNav.innerHTML = html
+                      permalinkBefore: true,
+                      permalinkSymbol: '§',
                     })
 
-                    md.renderer.rules.image = (tokens, idx, options, env, self) => {
-                        let token = tokens[idx]
-                        token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
-                        let result = self.renderToken(tokens, idx, options)
-                        return '<div class="article-info-image">' + result + '</div>';
-                    }
+                  md.renderer.rules.image = (tokens, idx, options, env, self) => {
+                    let token = tokens[idx]
+                    token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
+                    let result = self.renderToken(tokens, idx, options)
+                    return '<div class="article-info-image">' + result + '</div>';
+                  }
 
-                    this.articleInfo.content = md.render(articleData.content)
+                  md.use(require('markdown-it-toc-done-right').default, {
+                    callback: html => setTimeout(this.$refs.tocNav.innerHTML = html, 1000)
+                  })
 
-                    const desc = this.articleInfo.brief ? this.articleInfo.brief : this.articleInfo.content
+                  this.articleInfo.content = md.render(articleData.content)
+
+                  const desc = this.articleInfo.brief ? this.articleInfo.brief : this.articleInfo.content
                   const config = {
                     sites: ['qzone', 'qq', 'weibo', 'wechat', 'douban', 'facebook', 'twitter'],
                     title: document.title,
@@ -190,16 +191,16 @@
                     source: this.currentUrl,
                     url: this.currentUrl
                   }
-                    socialShare('.share-body', config)
+                  socialShare('.share-body', config)
 
-                    if (data.previous) {
-                        this.previous = data.previous
-                    }
-                    if (data.next) {
-                        this.next = data.next
-                    }
+                  if (data.previous) {
+                    this.previous = data.previous
+                  }
+                  if (data.next) {
+                    this.next = data.next
+                  }
 
-                    this.livereComments()
+                  this.livereComments()
                 })
             },
             livereComments() {
