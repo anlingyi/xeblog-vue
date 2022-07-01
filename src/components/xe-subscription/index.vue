@@ -27,213 +27,213 @@
 </template>
 
 <script>
-    import RegEx from '../../constants/RegEx'
-    import * as api from '@/api'
+import RegEx from '../../constants/RegEx'
+import * as api from '@/api'
 
-    export default {
-        data() {
-            return {
-                isShow: false,
-                isShowEmail: true,
-                email: '',
-                verifyCode: '',
-                retryTime: 0
+export default {
+    data() {
+        return {
+            isShow: false,
+            isShowEmail: true,
+            email: '',
+            verifyCode: '',
+            retryTime: 0
+        }
+    },
+    computed: {
+        getRetryTime() {
+            return this.retryTime == 0 ? '<i class="fa fa-refresh"></i>' : this.retryTime
+        }
+    },
+    methods: {
+        init() {
+            this.isShow = false
+            this.isShowEmail = true
+            this.email = ''
+            this.verifyCode = ''
+            this.retryTime = 0
+        },
+        open() {
+            this.isShow = true
+            this.disableScroll()
+        },
+        close() {
+            this.isShow = false
+            this.disableScroll()
+        },
+        disableScroll() {
+            let overflow = ''
+            if (this.isShow) {
+                overflow = 'hidden'
+            }
+            document.body.style.overflow = overflow
+        },
+        checkEmail() {
+            if (!RegEx.email.test(this.email)) {
+                this.$toast.info('请输入有效的邮箱地址！')
+                throw '请输入有效的邮箱地址！'
             }
         },
-        computed: {
-            getRetryTime() {
-                return this.retryTime == 0 ? '<i class="fa fa-refresh"></i>' : this.retryTime
+        checkVerifyCode() {
+            if (this.verifyCode.replace(/\s*/g, "").length != 6) {
+                this.$toast.info("请输入有效的验证码！")
+                throw '请输入有效的验证码！'
             }
         },
-        methods: {
-            init() {
-                this.isShow = false
-                this.isShowEmail = true
-                this.email = ''
-                this.verifyCode = ''
-                this.retryTime = 0
-            },
-            open() {
-                this.isShow = true
-                this.disableScroll()
-            },
-            close() {
-                this.isShow = false
-                this.disableScroll()
-            },
-            disableScroll() {
-                let overflow = ''
-                if (this.isShow) {
-                    overflow = 'hidden'
-                }
-                document.body.style.overflow = overflow
-            },
-            checkEmail() {
-                if (!RegEx.email.test(this.email)) {
-                    this.$toast.info('请输入有效的邮箱地址！')
-                    throw '请输入有效的邮箱地址！'
-                }
-            },
-            checkVerifyCode() {
-                if (this.verifyCode.replace(/\s*/g, "").length != 6) {
-                    this.$toast.info("请输入有效的验证码！")
-                    throw '请输入有效的验证码！'
-                }
-            },
-            subscribe() {
-                this.checkEmail()
-                this.checkVerifyCode()
+        subscribe() {
+            this.checkEmail()
+            this.checkVerifyCode()
 
-                api.subscribe({
-                    email: this.email,
-                    code: this.verifyCode
-                }).then(resp => {
-                    if (resp.code !== 200) {
-                        this.$toast.info(resp.message)
-                        return
-                    }
-
-                    this.$toast.success("感谢您的订阅！")
-                    this.init()
-                })
-            },
-            lockRetry(t) {
-                this.retryTime = t--
-                let retryBtn = this.$refs.retryBtn
-                retryBtn.setAttribute('disabled', 'true')
-                if (t < 0) {
-                    retryBtn.removeAttribute('disabled')
+            api.subscribe({
+                email: this.email,
+                code: this.verifyCode
+            }).then(resp => {
+                if (resp.code !== 200) {
+                    this.$toast.info(resp.message)
                     return
                 }
 
-                setTimeout(() => {
-                    this.lockRetry(t)
-                }, 1000)
-            },
-            async sendVerifyCode() {
-                this.checkEmail()
+                this.$toast.success("感谢您的订阅！")
+                this.init()
+            })
+        },
+        lockRetry(t) {
+            this.retryTime = t--
+            let retryBtn = this.$refs.retryBtn
+            retryBtn.setAttribute('disabled', 'true')
+            if (t < 0) {
+                retryBtn.removeAttribute('disabled')
+                return
+            }
 
-                await api.sendVerifyCode(this.email).then(resp => {
-                    if (resp.code !== 200) {
-                        this.$toast.info(resp.message)
-                        return
-                    }
+            setTimeout(() => {
+                this.lockRetry(t)
+            }, 1000)
+        },
+        async sendVerifyCode() {
+            this.checkEmail()
 
-                    this.lockRetry(60)
-                    this.isShowEmail = false
-                    this.$toast.success("验证码已发送到您的邮箱，请注意查收！", 5000)
-                })
-            },
-            async preSubscribe() {
-                let okBtn = this.$refs.okBtn
-                const originHtml = okBtn.innerHTML
-
-                okBtn.textContent = 'Loading...'
-                okBtn.setAttribute('disabled', 'true')
-
-                try {
-                    await this.sendVerifyCode()
-                } finally {
-                    okBtn.innerHTML = originHtml
-                    okBtn.removeAttribute('disabled')
+            await api.sendVerifyCode(this.email).then(resp => {
+                if (resp.code !== 200) {
+                    this.$toast.info(resp.message)
+                    return
                 }
+
+                this.lockRetry(60)
+                this.isShowEmail = false
+                this.$toast.success("验证码已发送到您的邮箱，请注意查收！", 5000)
+            })
+        },
+        async preSubscribe() {
+            let okBtn = this.$refs.okBtn
+            const originHtml = okBtn.innerHTML
+
+            okBtn.textContent = 'Loading...'
+            okBtn.setAttribute('disabled', 'true')
+
+            try {
+                await this.sendVerifyCode()
+            } finally {
+                okBtn.innerHTML = originHtml
+                okBtn.removeAttribute('disabled')
             }
         }
     }
+}
 </script>
 
 <style lang="less" scoped>
-    @color: #474a4d;
-    .xe-subscription {
-        position: fixed;
-        z-index: 99999;
-        background-color: rgba(0, 0, 0, 0.6);
-        width: 100vw;
-        height: 100vh;
-        color: @color;
+@color: #474a4d;
+.xe-subscription {
+    position: fixed;
+    z-index: 99999;
+    background-color: rgba(0, 0, 0, 0.6);
+    width: 100vw;
+    height: 100vh;
+    color: @color;
 
-        .body {
+    .body {
+        position: inherit;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #fff;
+        box-shadow: 0px 0px 3px 0px #ccc;
+        border-radius: 6px;
+        width: 85%;
+        max-width: 500px;
+        height: 200px;
+        text-align: center;
+
+        .close {
             position: inherit;
-            top: 30%;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #fff;
-            box-shadow: 0px 0px 3px 0px #ccc;
-            border-radius: 6px;
-            width: 85%;
-            max-width: 500px;
-            height: 200px;
-            text-align: center;
+            top: 0;
+            right: 0.6rem;
+            cursor: pointer;
+            color: #2a2a2a;
 
-            .close {
-                position: inherit;
-                top: 0;
-                right: 0.6rem;
-                cursor: pointer;
-                color: #2a2a2a;
-
-                &:hover {
-                    color: #000;
-                }
+            &:hover {
+                color: #000;
             }
+        }
 
-            .title {
-                border-bottom: 1px solid #ccc;
-                height: 40px;
-                line-height: 40px;
-            }
+        .title {
+            border-bottom: 1px solid #ccc;
+            height: 40px;
+            line-height: 40px;
+        }
 
-            .content {
-                margin: 25px;
-                font-size: 16px;
+        .content {
+            margin: 25px;
+            font-size: 16px;
 
-                .input {
-                    input {
-                        border: 0;
-                        outline: none;
-                        border-radius: 5px;
-                        border: 2px solid @color;
-                        box-shadow: 0px 0px 2px 0px #000;
-                        text-align: center;
-                        background-color: #fafafa;
-                        font-size: 14px;
-                        height: 30px;
-
-                        &:hover {
-                            box-shadow: 0px 0px 5px 0px #000;
-                        }
-                    }
-
-                    .email {
-                        width: 80%;
-                        max-width: 220px;
-                    }
-
-                    .verifyCode {
-                        width: 120px;
-                    }
-                }
-
-                .button {
-                    margin-top: 15px;
-                }
-
-                button {
-                    width: 80px;
-                    height: 35px;
-                    background-color: @color;
+            .input {
+                input {
                     border: 0;
                     outline: none;
-                    cursor: pointer;
-                    color: #d3cbc6;
-                    box-shadow: 0px 0px 2px 0px #000;
                     border-radius: 5px;
+                    border: 2px solid @color;
+                    box-shadow: 0px 0px 2px 0px #000;
+                    text-align: center;
+                    background-color: #fafafa;
+                    font-size: 14px;
+                    height: 30px;
 
                     &:hover {
                         box-shadow: 0px 0px 5px 0px #000;
                     }
                 }
+
+                .email {
+                    width: 80%;
+                    max-width: 220px;
+                }
+
+                .verifyCode {
+                    width: 120px;
+                }
+            }
+
+            .button {
+                margin-top: 15px;
+            }
+
+            button {
+                width: 80px;
+                height: 35px;
+                background-color: @color;
+                border: 0;
+                outline: none;
+                cursor: pointer;
+                color: #d3cbc6;
+                box-shadow: 0px 0px 2px 0px #000;
+                border-radius: 5px;
+
+                &:hover {
+                    box-shadow: 0px 0px 5px 0px #000;
+                }
             }
         }
     }
+}
 </style>
