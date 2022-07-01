@@ -7,17 +7,17 @@
 </template>
 
 <style lang="less" scoped>
-    p {
-        font-weight: bold;
-        font-size: 1.6rem;
-        text-align: center;
+p {
+    font-weight: bold;
+    font-size: 1.6rem;
+    text-align: center;
 
-        .code {
-            color: #9d2933;
-        }
-
-        .msg {
-            color: #333333;
-        }
+    .code {
+        color: #9d2933;
     }
+
+    .msg {
+        color: #333333;
+    }
+}
 </style>
