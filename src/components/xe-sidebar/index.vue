@@ -21,16 +21,16 @@
                         <div class="statistics">
                             <ul>
                                 <li>
+                                    <div class="val">{{ userInfo.tagCount }}</div>
+                                    <div>标签</div>
+                                </li>
+                                <li>
                                     <div class="val">{{ userInfo.articleCount }}</div>
-                                    <div>日志</div>
+                                    <div>文章</div>
                                 </li>
                                 <li>
                                     <div class="val">{{ userInfo.categoryCount }}</div>
                                     <div>分类</div>
-                                </li>
-                                <li>
-                                    <div class="val">{{ userInfo.tagCount }}</div>
-                                    <div>标签</div>
                                 </li>
                             </ul>
                         </div>
