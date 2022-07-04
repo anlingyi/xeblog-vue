@@ -124,7 +124,7 @@ export default {
         this.getArticleInfo()
         setTimeout(() => {
             this.livereComments()
-        }, 500)
+        }, 800)
     },
     methods: {
         getArticleInfo() {
@@ -176,9 +176,9 @@ export default {
 
                 md.renderer.rules.image = (tokens, idx, options, env, self) => {
                     let token = tokens[idx]
-                    token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env);
+                    token.attrs[token.attrIndex('alt')][1] = self.renderInlineAsText(token.children, options, env)
                     let result = self.renderToken(tokens, idx, options)
-                    return '<div class="article-info-image">' + result + '</div>';
+                    return '<div class="article-info-image">' + result + '</div>'
                 }
 
                 md.use(require('markdown-it-toc-done-right').default, {
@@ -186,6 +186,13 @@ export default {
                         try {
                             setTimeout(() => {
                                 this.$refs.tocNav.innerHTML = html
+                                let imgDom = document.getElementsByClassName('article-info-image')
+                                for (let dom of imgDom) {
+                                    let img = dom.childNodes[0]
+                                    img.onclick = () => {
+                                        window.open(img.src, '_blank')
+                                    }
+                                }
                             }, 1500)
                         } catch (error) {
                             console.error(error)
