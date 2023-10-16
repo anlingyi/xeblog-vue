@@ -175,7 +175,7 @@ export default {
             }
         },
         getAddress(lng, lat) {
-            axios.get('https://restapi.amap.com/v3/geocode/regeo', {
+            axios.get(window.location.protocol + '//restapi.amap.com/v3/geocode/regeo', {
                 params: {
                     location: this.gpsToAMap(lng, lat),
                     key: '164fdccf3c6a8341f23e5d903642391f'
