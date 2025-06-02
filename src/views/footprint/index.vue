@@ -60,7 +60,6 @@
 
 <script>
 import * as api from '@/api'
-import axios from 'axios'
 
 export default {
     data() {
@@ -175,14 +174,11 @@ export default {
             }
         },
         getAddress(lng, lat) {
-            axios.get(window.location.protocol + '//restapi.amap.com/v3/geocode/regeo', {
-                params: {
-                    location: this.gpsToAMap(lng, lat),
-                    key: '164fdccf3c6a8341f23e5d903642391f'
-                }
+            api.regeo({
+                location: this.gpsToAMap(lng, lat)
             }).then(resp => {
-                if (resp.data.info === 'OK') {
-                    this.address = resp.data.regeocode.formatted_address
+                if (resp.info === 'OK') {
+                    this.address = resp.regeocode.formatted_address
                 }
                 if (!this.address) {
                     this.$toast.error("获取位置信息失败！")

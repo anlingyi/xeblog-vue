@@ -104,6 +104,14 @@ export function addFootprint(data) {
     })
 }
 
+export function regeo(data) {
+    return request({
+        url: 'footprint/geocode/regeo',
+        method: 'get',
+        params: data
+    })
+}
+
 // 随机文章
 export function randomArticle() {
     return request({
