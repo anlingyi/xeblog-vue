@@ -70,7 +70,7 @@
             <div>
                 <xe-recommend/>
             </div>
-            <div id="lv-container" :data-uid="livereUid" :data-id="livereId"></div>
+            <div id="waline"></div>
         </div>
         <div class="toc" v-show="showToc">
             <div ref="tocNav"></div>
@@ -85,6 +85,7 @@ import * as api from '@/api'
 import MarkDownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/dracula.css'
+import {init} from '@/assets/lib/waline/js/waline.js';
 
 export default {
     data() {
@@ -116,14 +117,15 @@ export default {
             },
             showToc: false,
             currentUrl: 'https://' + process.env.VUE_APP_DOMAIN + '/articles/' + this.$route.params.id,
-            livereId: 'city', // 来必力id
-            livereUid: 'MTAyMC80MzA2MC8xOTYwNg==' // 来必力uid
         }
     },
     mounted() {
         this.getArticleInfo()
         setTimeout(() => {
-            this.livereComments()
+            init({
+                el: '#waline',
+                serverURL: window.location.protocol + '//' + window.location.host + '/waline'
+            })
         }, 800)
     },
     methods: {
@@ -221,25 +223,6 @@ export default {
                 }
             })
         },
-        livereComments() {
-            window.livereOptions = {
-                refer: this.currentUrl.replace('https://', '')
-            };
-
-            (function (d, s) {
-                let j, e = d.getElementsByTagName(s)[0]
-
-                if (typeof LivereTower === 'function') {
-                    return
-                }
-
-                j = d.createElement(s)
-                j.src = 'https://cdn-city.livere.com/js/embed.dist.js'
-                j.async = true
-
-                e.parentNode.insertBefore(j, e)
-            })(document, 'script')
-        },
         displayToc() {
             this.showToc = !this.showToc
         }
@@ -250,4 +233,5 @@ export default {
 <style scoped>
 @import '../../assets/lib/social-share/css/share.min.css';
 @import '../../assets/lib/markdown-theme/GitHub.css';
+@import '../../assets/lib/waline/css/waline.css';
 </style>
