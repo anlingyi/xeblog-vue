@@ -85,7 +85,7 @@ import * as api from '@/api'
 import MarkDownIt from 'markdown-it'
 import hljs from 'highlight.js'
 import 'highlight.js/styles/dracula.css'
-import {init} from '@/assets/lib/waline/js/waline.js';
+import {init} from '@/assets/lib/waline/js/waline.js'
 
 export default {
     data() {

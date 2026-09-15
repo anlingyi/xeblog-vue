@@ -10,7 +10,7 @@
             <div class="content">
                 <div class="input">
                     <input type="text" class="email" v-model="email" placeholder="请输入邮箱地址" v-show="isShowEmail">
-                    <div style="display: inline-block" v-show="!isShowEmail">
+                    <div class="verify-wrapper" v-show="!isShowEmail">
                         <input type="text" v-model="verifyCode" maxlength="6" class="verifyCode" placeholder="请输入验证码">
                         <button style="margin-left: 10px" ref="retryBtn" @click="sendVerifyCode">重试 <span
                                 v-html="getRetryTime"></span></button>
@@ -42,7 +42,7 @@ export default {
     },
     computed: {
         getRetryTime() {
-            return this.retryTime == 0 ? '<i class="fa fa-refresh"></i>' : this.retryTime
+            return this.retryTime === 0 ? '<i class="fa fa-refresh"></i>' : this.retryTime
         }
     },
     methods: {
@@ -58,7 +58,7 @@ export default {
             this.disableScroll()
         },
         close() {
-            this.isShow = false
+            this.init()
             this.disableScroll()
         },
         disableScroll() {
@@ -75,7 +75,7 @@ export default {
             }
         },
         checkVerifyCode() {
-            if (this.verifyCode.replace(/\s*/g, "").length != 6) {
+            if (this.verifyCode.replace(/\s*/g, "").length !== 6) {
                 this.$toast.info("请输入有效的验证码！")
                 throw '请输入有效的验证码！'
             }
@@ -107,6 +107,9 @@ export default {
             }
 
             setTimeout(() => {
+                if (this.retryTime === 0) {
+                    return
+                }
                 this.lockRetry(t)
             }, 1000)
         },
@@ -234,6 +237,10 @@ export default {
                 }
             }
         }
+    }
+
+    .verify-wrapper {
+        display: inline-block;
     }
 }
 </style>
